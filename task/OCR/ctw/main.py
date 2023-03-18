@@ -1,15 +1,15 @@
 from __future__ import print_function
-from task.model.ctw import config
+from task.model.DAN import base
 import yaml
 from task.framework import baseline
 
-filepath = "/task/yaml/ctw.yaml"
+filepath = "/task/yaml/DAN.yaml"
 ctwConfig = yaml.load(filepath)
 DICT = {
-    "500": config.DanConfig(),
-    "1000": config.DanConfig(),
-    "1500": config.DanConfig(),
-    "2000": config.DanConfig()
+    "500": base.DanConfig(),
+    "1000": base.DanConfig(),
+    "1500": base.DanConfig(),
+    "2000": base.DanConfig()
 }
 root = "/"
 
@@ -18,3 +18,4 @@ if __name__ == '__main__':
         cfgs = DICT[k](root)
         runner = baseline.BaselineDAN(cfgs)
 
+        print(k, "Done")

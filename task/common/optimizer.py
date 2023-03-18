@@ -48,3 +48,29 @@ def getOpt():
             'gamma': 0.1,
         },
     }
+
+
+def generateOptimizer(cfgs, model):
+    optimizer = []
+    scheduler = []
+    for i in range(0, len(model)):
+        optimizer.append(
+            cfgs.optimizerConfigs['optimizer_{}'.format(i)](
+                model[i].parameters(),
+                **cfgs.optimizerConfigs['optimizer_{}_args'.format(i)]
+            )
+        )
+        scheduler.append(
+            cfgs.optimizer_cfgs['optimizer_{}_scheduler'.format(i)](
+                optimizer[i],
+                **cfgs.optimizer_cfgs['optimizer_{}_scheduler_args'.format(i)]
+            )
+        )
+
+    return tuple(optimizer), tuple(scheduler)
+
+
+def UpdatePara(optimizers, frozen):
+    for i in range(0,len(optimizers)):
+        if i not in frozen:
+            optimizers[i].step()
