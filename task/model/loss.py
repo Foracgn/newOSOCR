@@ -1,5 +1,6 @@
 import editdistance as ed
 
+
 # TODO
 class LossCounter:
     def __init__(self, interval):
@@ -86,9 +87,9 @@ class AccuracyCounter:
             pass
         print('Accuracy: {:.6f}, AR: {:.6f}, CER: {:.6f}, WER: {:.6f}'.format(
             self.correct / self.totalSamples,
-            1 - self.distanceC / max(1.0,self.totalC),
-            self.distanceC / max(1.0,self.totalC),
-            self.distanceW / max(1.0,self.totalW)))
+            1 - self.distanceC / max(1.0, self.totalC),
+            self.distanceC / max(1.0, self.totalC),
+            self.distanceW / max(1.0, self.totalW)))
 
     def clear(self):
         self.correct = 0
@@ -112,7 +113,6 @@ class RejectAccuracyCounter:
         self.Ucorr = 0.
         self.Kcorr = 0.
         self.KtU = 0.
-
 
     def addIter(self, predict, label):
         if label is None:
