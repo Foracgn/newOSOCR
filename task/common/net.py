@@ -1,8 +1,46 @@
 import torch
+from task.common.module import convolutional_alignment, decoupled_text_decoder, feature_extractor, positional_encoding
+from task.model.DAN.module import convolutional_alignment as cam
+from task.model.DAN.module import decoupled_text_decoder as dtd
+from task.model.DAN.module import feature_extractor as fe
+from task.model.DAN.module import positional_encoding as pe
 
 
-def getNetConfig():
-    pass
+def getNetConfig(metaPath, token, hardness, maxT, valFrac, root):
+    configs = makeNetConfig(
+        fe.FeatureExtractor,
+        cam.ConvolutionAlignment,
+        dtd.DecoupledTextDecoder,
+        pe.PositionalEncoding,
+        metaPath,
+        hardness,
+        maxT,
+        valFrac
+    )
+    makeToken(configs, token, root)
+
+
+def makeNetConfig(FE, CAM, DTD, PE, hardness, metaPath, maxT, valFrac=0.8):
+    return {
+        'FE': FE,
+        'FE_args': feature_extractor.getFEConfig(hardness),
+        'CAM': CAM,
+        'CAM_args': convolutional_alignment.getCAMConfig(maxT),
+        'DTD': DTD,
+        'DTD_args': decoupled_text_decoder.getDTDConfig(),
+        'PE': PE,
+        'PE_args': positional_encoding.getPEConfig(metaPath, valFrac)
+    }
+
+
+def makeToken(configs, token, root):
+    if token is not None:
+        configs['init_state_dict_fe'] = ".pth"
+        configs['init_state_dict_cam'] = ".pth"
+        configs['init_state_dict_dtd'] = ".pth"
+        configs['init_state_dict_pe'] = ".pth"
+
+    return configs
 
 
 def loadNet(cfgs):
@@ -49,8 +87,8 @@ def FlattenLabel(target):
     labelLength = []
     for i in range(0, target.size()[0]):
         curLabel = target[i].tolist()
-        labelFlatten += curLabel[:curLabel.index(0)+1]
-        labelLength.append(curLabel.index(0)+1)
+        labelFlatten += curLabel[:curLabel.index(0) + 1]
+        labelLength.append(curLabel.index(0) + 1)
     labelFlatten = torch.LongTensor(labelFlatten)
     labelLength = torch.IntTensor(labelLength)
     return labelFlatten, labelLength

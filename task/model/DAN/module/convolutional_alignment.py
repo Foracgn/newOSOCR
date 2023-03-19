@@ -1,9 +1,9 @@
 from torch import nn
 
 
-class CAM(nn.Module):
+class ConvolutionAlignment(nn.Module):
     def __init__(self, scales, maxT, depth, numChannels):
-        super(CAM, self).__init__()
+        super(ConvolutionAlignment, self).__init__()
         netRes = []
         # fpn: feature pyramid network
         for i in range(1, len(scales)):
