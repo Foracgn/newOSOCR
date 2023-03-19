@@ -77,8 +77,8 @@ class BaselineDAN:
             optimizer.UpdatePara(self.optimizerSchedulers, frozen=[])
             for i in range(0, len(self.model)):
                 torch.save(
-                    self.model.stateDict(),
-                    self.model.savingConfigs['savingPath'] + 'E{}_M{}.pth'.format(nEpoch, i)
+                    self.model[i].stateDict(),
+                    self.cfgs.savingConfigs['savingPath'] + 'E{}_M{}.pth'.format(nEpoch, i)
                 )
 
     def trainIter(self, nEpoch, idx, batch, tot):
@@ -113,7 +113,8 @@ class BaselineDAN:
                         nEpoch,
                         idx,
                         tot,
-                        i)
+                        i
+                    )
                 )
 
     def fpbp(self, image, label, cased=None):  # Forward Propagation And Backward Propagation

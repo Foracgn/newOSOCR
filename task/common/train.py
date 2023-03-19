@@ -20,5 +20,9 @@ def getTestCfg():
     }
 
 
-def getSaveCfg():
-    return 0
+def getSaveCfg(saveRoot):
+    return{
+        'saving_iter_interval': 20000,
+        'saving_epoch_interval': 1,
+        'savingPath': saveRoot
+    }
