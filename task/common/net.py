@@ -18,18 +18,19 @@ def getNetConfig(metaPath, modelPath, maxT, valFrac=0.8):
         valFrac
     )
     makeToken(configs, modelPath)
+    return configs
 
 
 def makeNetConfig(FE, CAM, DTD, PE, hardness, metaPath, maxT, valFrac=0.8):
     return {
         'FE': FE,
-        'FE_args': feature_extractor.getFEConfig(hardness),
+        'FEConfigs': feature_extractor.getFEConfig(hardness),
         'CAM': CAM,
-        'CAM_args': convolutional_alignment.getCAMConfig(maxT),
+        'CAMConfigs': convolutional_alignment.getCAMConfig(maxT),
         'DTD': DTD,
-        'DTD_args': decoupled_text_decoder.getDTDConfig(),
+        'DTDConfigs': decoupled_text_decoder.getDTDConfig(),
         'PE': PE,
-        'PE_args': positional_encoding.getPEConfig(metaPath, valFrac)
+        'PEConfigs': positional_encoding.getPEConfig(metaPath, valFrac)
     }
 
 
