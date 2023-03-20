@@ -10,8 +10,8 @@ class DanConfig:
         self.datasetConfigs = dataset.getCompareDatasetConfig(
             pathSet.trainRoot[num],
             pathSet.trainDict[num],
-            pathSet.testRoot[num],
-            pathSet.testRoot[num],
+            pathSet.testRoot,
+            pathSet.testDict,
             T
         )
         self.globalConfigs = train.getTrainCfg()
