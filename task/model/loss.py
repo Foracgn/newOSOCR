@@ -1,7 +1,6 @@
 import editdistance as ed
 
 
-# TODO
 class LossCounter:
     def __init__(self, interval):
         self.interval = interval

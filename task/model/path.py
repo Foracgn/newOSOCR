@@ -1,7 +1,6 @@
 import yaml
 
 
-# TODO:读取数据路径
 class Path:
     def __init__(self, constPath, setType, ):
         # 参数
