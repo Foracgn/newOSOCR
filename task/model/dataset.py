@@ -118,3 +118,6 @@ class lmdbDataset(Dataset):
             self.lengths.append(samples)
             self.roots.append(one)
             self.envs.append(env)
+
+    def __len__(self):
+        return self.numSamples
