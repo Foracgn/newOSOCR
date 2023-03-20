@@ -56,7 +56,7 @@ class BaselineDAN:
         self.trainAccuracy = self.getAccuracy('train accuracy:', self.cfgs.datasetConfigs['trainCaseSensitive'])
         self.testAccuracy = self.getAccuracy('test accuracy:', self.cfgs.datasetConfigs['testCaseSensitive'])
         self.testReject = self.getReject('test reject:', self.cfgs.datasetConfigs['testCaseSensitive'])
-        self.lossCounter = self.getLoss(self.cfgs.globalConfig['showInterval'])
+        self.lossCounter = self.getLoss(self.cfgs.globalConfigs['showInterval'])
 
     def setLoss(self):
         self.standardCE = nn.CrossEntropyLoss().cuda()
@@ -71,7 +71,7 @@ class BaselineDAN:
         totalIter = len(self.trainLoader)
         for one in self.model:
             one.train()
-        for nEpoch in range(0, self.cfgs.globalConfig['epoch']):
+        for nEpoch in range(0, self.cfgs.globalConfigs['epoch']):
             for i, batch in enumerate(self.trainLoader):
                 self.trainIter(nEpoch, i, batch, totalIter)
             optimizer.UpdatePara(self.optimizerSchedulers, frozen=[])
@@ -90,7 +90,7 @@ class BaselineDAN:
         for one in self.model:
             nn.utils.clip_grad_norm(one.parameters(), 20, 2)
         optimizer.UpdatePara(self.optimizers, frozen=[])
-        if idx % self.cfgs.globalConfig['showInterval'] == 0 and idx != 0:
+        if idx % self.cfgs.globalConfigs['showInterval'] == 0 and idx != 0:
 
             print(datetime.datetime.now().strftime('%H:%M:%S'))
             oneLoss, terms = self.lossCounter.getLossAndTerms()
