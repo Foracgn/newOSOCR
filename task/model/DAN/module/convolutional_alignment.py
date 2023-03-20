@@ -49,6 +49,17 @@ class ConvolutionAlignment(nn.Module):
                 nn.ReLU(True)
             )
         ]
+        for i in range(1, int(depth / 2)):
+            convRes.append(
+                nn.Sequential(
+                    nn.Conv2d(
+                        numChannel, numChannel,
+                        tuple(kSizeConv[i]), tuple(strides[i]),
+                        (int((kSizeConv[i][0] - 1) / 2), int((kSizeConv[i][1] - 1) / 2))
+                    ),
+                    nn.BatchNorm2d(numChannel), nn.ReLU(True)
+                )
+            )
         self.convs = nn.Sequential(*convRes)
 
         deConvRes = []
