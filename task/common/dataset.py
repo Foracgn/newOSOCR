@@ -30,7 +30,7 @@ def getCompareDatasetConfig(trainRoot, trainDict, testRoot, testDict, maxT=25):
         'datasetTrain': lmdbDataset,
         'datasetTrainConfigs': {
             'repeat': 1,
-            'roots': trainRoot,
+            'roots': [trainRoot],
             'imgH': 32,
             'imgW': 64,
             'transform': transforms.Compose([transforms.ToTensor()]),
@@ -46,7 +46,7 @@ def getCompareDatasetConfig(trainRoot, trainDict, testRoot, testDict, maxT=25):
         'trainMeta': trainDict,
         'datasetTest': lmdbDataset,
         'datasetTestConfigs': {
-            'roots': testRoot,
+            'roots': [testRoot],
             'imgH': 32,
             'imgW': 64,
             'transform': transforms.Compose([transforms.ToTensor()]),
