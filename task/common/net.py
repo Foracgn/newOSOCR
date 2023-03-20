@@ -48,22 +48,22 @@ def loadNet(cfgs):
     modelFE = cfgs.netConfigs['FE'](**cfgs.netConfigs['FEConfigs'])
     cfgs.netConfigs['CAMConfigs']['scales'] = modelFE.getShape()
     if cfgs.netConfigs['initStateDictFE'] is not None:
-        modelFE.loadStateDict(torch.load(cfgs.netConfigs['initStateDictFE']))
+        modelFE.load_state_dict(torch.load(cfgs.netConfigs['initStateDictFE']))
     modelFE.cuda()
     # 卷积对齐模块
     modelCAM = cfgs.netConfigs['CAM'](**cfgs.netConfigs['CAMConfigs'])
     if cfgs.netConfigs['initStateDictCAM'] is not None:
-        modelCAM.loadStateDict(torch.load(cfgs.netConfigs['initStateDictCAM']))
+        modelCAM.load_state_dict(torch.load(cfgs.netConfigs['initStateDictCAM']))
     modelCAM.cuda()
     # 去耦解码器
     modelDTD = cfgs.netConfigs['DTD'](**cfgs.netConfigs['DTDConfigs'])
     if cfgs.netConfigs['initStateDictDTD'] is not None:
-        modelDTD.loadStateDict(torch.load(cfgs.netConfigs['initStateDictDTD']))
+        modelDTD.load_state_dict(torch.load(cfgs.netConfigs['initStateDictDTD']))
     modelDTD.cuda()
     # 位置编码 Positional Encoding
     modelPE = cfgs.netConfigs['PE'](**cfgs.netConfigs['PEConfigs'])
     if cfgs.netConfigs['initStateDictPE'] is not None:
-        modelPE.loadStateDict(torch.load(cfgs.netConfigs['initStateDictPE']))
+        modelPE.load_state_dict(torch.load(cfgs.netConfigs['initStateDictPE']))
     modelPE.cuda()
 
     return modelFE, modelCAM, modelDTD, modelPE
