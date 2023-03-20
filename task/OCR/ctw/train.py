@@ -12,8 +12,8 @@ DICT = {
 }
 
 if __name__ == '__main__':
-    for k in range(len(DICT)):
-        cfgs = DICT[k](pathSet, k)
+    for i, k in enumerate(DICT):
+        cfgs = DICT[k](pathSet, i)
         runner = baseline.BaselineDAN(cfgs)
         runner.run(pathSet.modelRoot, False)
         print(k, "Done")
