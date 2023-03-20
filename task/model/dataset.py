@@ -26,7 +26,7 @@ class lmdbDataset(Dataset):
         self.imgH = imgH
         self.imgW = imgW
 
-        if self.ratio is not None:
+        if ratio is not None:
             for i in range(0, len(roots)):
                 self.ratio.append(ratio[i] / float(sum(ratio)))
         if forceTargetRatio is None:
