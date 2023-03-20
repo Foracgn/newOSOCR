@@ -3,7 +3,7 @@ from task.model.DAN import base
 from task.model import path
 from task.framework import baseline
 
-pathSet = path.Path("/task/yaml/ctw.yaml", "basic")
+pathSet = path.Path("./task/yaml/ctw.yaml", "basic")
 DICT = {
     "task0": base.DanConfig,
     "task1": base.DanConfig,
