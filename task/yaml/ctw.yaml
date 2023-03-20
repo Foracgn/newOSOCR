@@ -1,5 +1,5 @@
 
-modelRoot: /prfinal/ctw_extra/models/scene
+modelRoot: ./prfinal/ctw_extra/models/scene
 
 basic:
   FE0: /basic_ctwch_CE_alter_500_E9_M0.pth
@@ -19,7 +19,7 @@ basic:
   DTD3: /basic_ctwch_CE_alter_2000_E9_M2.pth
   PE3: /basic_ctwch_CE_alter_2000_E9_M3.pth
 
-datasetRoot: /packs
+datasetRoot: ./packs
 
 test:
   root: /ctwch/ctwfsl_5_1eval
