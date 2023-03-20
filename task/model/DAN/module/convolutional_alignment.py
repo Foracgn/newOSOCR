@@ -2,7 +2,7 @@ from torch import nn
 
 
 class ConvolutionAlignment(nn.Module):
-    def __init__(self, scales, maxT, depth, numChannels):
+    def __init__(self, scales, maxT, depth, numChannel):
         super(ConvolutionAlignment, self).__init__()
         netRes = []
         # fpn: feature pyramid network
@@ -40,12 +40,12 @@ class ConvolutionAlignment(nn.Module):
         convRes = [
             nn.Sequential(
                 nn.Conv2d(
-                    inShape[0], numChannels,
+                    inShape[0], numChannel,
                     tuple(kSizeConv[0]),
                     tuple(strides[0]),
                     (int((kSizeConv[0][0] - 1) / 2), int((kSizeConv[0][1] - 1) / 2))
                 ),
-                nn.BatchNorm2d(numChannels),
+                nn.BatchNorm2d(numChannel),
                 nn.ReLU(True)
             )
         ]
@@ -56,18 +56,18 @@ class ConvolutionAlignment(nn.Module):
             deConvRes.append(
                 nn.Sequential(
                     nn.ConvTranspose2d(
-                        numChannels, numChannels,
+                        numChannel, numChannel,
                         tuple(kSizeDeConv[int(depth / 2) - i]),
                         tuple(strides[int(depth / 2) - i]),
                         (int(kSizeDeConv[int(depth / 2) - i][0] / 4.), int(kSizeDeConv[int(depth / 2) - i][1] / 4.))),
-                    nn.BatchNorm2d(numChannels),
+                    nn.BatchNorm2d(numChannel),
                     nn.ReLU(True)
                 )
             )
         deConvRes.append(
             nn.Sequential(
                 nn.ConvTranspose2d(
-                    numChannels,
+                    numChannel,
                     maxT,
                     tuple(kSizeDeConv[0]),
                     tuple(strides[0]),

@@ -8,8 +8,8 @@ def getFEConfig(hardness, nChannel=512, ich=1, strides=None, shape=None, expf=1)
     return {
         'expf': expf,
         'strides': strides,
-        'compress_layer': False,
-        'input_shape': shape,
+        'compressLayer': False,
+        'shape': shape,
         'hardness': hardness,
         'oupch': nChannel,
     }

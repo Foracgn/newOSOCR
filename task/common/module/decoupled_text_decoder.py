@@ -1,5 +1,5 @@
 def getDTDConfig():
     return {
-        'num_channel': 512,
+        'numChannel': 512,
         'dropout': 0.3
     }
