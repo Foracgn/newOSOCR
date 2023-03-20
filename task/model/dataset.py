@@ -8,7 +8,7 @@ import image
 
 
 class lmdbDataset(Dataset):
-    def __init__(self, roots=None, ratio=None, imgH=32, imgW=128, trans=None, globalState='Test', maxT=25, repeat=1,
+    def __init__(self, roots=None, ratio=None, imgH=32, imgW=128, transform=None, globalState='Test', maxT=25, repeat=1,
                  qhbAUG=False, forceTargetRatio=None):
         self.envs = []
         self.roots = []
@@ -21,7 +21,7 @@ class lmdbDataset(Dataset):
         self.qhbAUG = qhbAUG
         self.setDataset(roots)
 
-        self.trans = trans
+        self.transform = transform
         self.maxLen = len(self.lengths)
         self.imgH = imgH
         self.imgW = imgW
@@ -66,8 +66,8 @@ class lmdbDataset(Dataset):
             img, bMask = self.keepRatioResize(img.convert('RGB'))
             if len(img.shape) == 2:
                 img = img[:, :, np.newaxis]
-            if self.trans:
-                img = self.trans(img)
+            if self.transform:
+                img = self.transform(img)
             sample = {
                 'image': img,
                 'label': label,
