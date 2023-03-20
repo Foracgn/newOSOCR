@@ -1,5 +1,5 @@
 
-modelRoot: ./prfinal/ctw_extra/models/scene
+modelRoot: ./prfinal/ctw_extra/
 
 basic:
   FE0: /basic_ctwch_CE_alter_500_E9_M0.pth

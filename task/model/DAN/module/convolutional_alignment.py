@@ -49,7 +49,7 @@ class ConvolutionAlignment(nn.Module):
                 nn.ReLU(True)
             )
         ]
-        self.conv = nn.Sequential(*convRes)
+        self.convs = nn.Sequential(*convRes)
 
         deConvRes = []
         for i in range(1, int(depth / 2)):
@@ -75,7 +75,7 @@ class ConvolutionAlignment(nn.Module):
                 nn.Sigmoid()
             )
         )
-        self.deConv = nn.Sequential(*deConvRes)
+        self.deconvs = nn.Sequential(*deConvRes)
 
     def forward(self, data):
         x = data[0]
