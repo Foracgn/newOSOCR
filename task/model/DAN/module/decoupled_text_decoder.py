@@ -26,10 +26,10 @@ class DecoupledTextDecoder(nn.Module):
         self.ALPHA = torch.nn.Parameter(torch.ones([1, 1]), requires_grad=True)
         self.contextFreePredict = torch.nn.Linear(self.numChannel, self.numChannel)
 
-        self.registerParameter("STA", self.STA)
-        self.registerParameter("STA", self.UNK)
-        self.registerParameter("STA", self.UNK_SCR)
-        self.registerParameter("STA", self.ALPHA)
+        self.register_parameter("STA", self.STA)
+        self.register_parameter("UNK", self.UNK)
+        self.register_parameter("UNK_SCR", self.UNK_SCR)
+        self.register_parameter("ALPHA", self.ALPHA)
 
     @staticmethod
     def normedInit(numChannel):
