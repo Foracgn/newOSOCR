@@ -61,7 +61,7 @@ def generateOptimizer(cfgs, model):
             )
         )
         scheduler.append(
-            cfgs.optimizer_cfgs['optimizer_{}_scheduler'.format(i)](
+            cfgs.optimizerConfigs['optimizer_{}_scheduler'.format(i)](
                 optimizer[i],
                 **cfgs.optimizer_cfgs['optimizer_{}_scheduler_args'.format(i)]
             )
