@@ -4,7 +4,7 @@ from torch.utils.data import Dataset
 import random
 import lmdb
 import six
-import image
+from PIL import Image
 
 
 class lmdbDataset(Dataset):
@@ -59,7 +59,7 @@ class lmdbDataset(Dataset):
             buff = six.BytesIO()
             buff.write(imgBuff)
             buff.seek(0)
-            img = image.open(buff)
+            img = Image.open(buff)
 
             labelKey = 'label-%09d' % index
             label = str(res.get(labelKey.encode())).decode('utf-8')
