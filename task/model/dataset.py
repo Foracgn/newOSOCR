@@ -62,7 +62,7 @@ class lmdbDataset(Dataset):
             img = Image.open(buff)
 
             labelKey = 'label-%09d' % index
-            label = str(res.get(labelKey.encode())).decode('utf-8')
+            label = str(res.get(labelKey.encode()).decode('utf-8'))
 
             if len(label) > self.maxT - 1 and self.globalState == 'Train':
                 print('sample too long')
