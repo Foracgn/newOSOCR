@@ -160,7 +160,7 @@ class BaselineDAN:
         self.trainAccuracy.clear()
 
     def makeProto(self, label):
-        return self.model[3].dump_all()
+        return self.model[3].sampleTrain(label)
 
     @staticmethod
     def getAccuracy(key, sensitive):
