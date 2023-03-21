@@ -6,7 +6,7 @@ class DecoupledTextDecoder(nn.Module):
 
     def __init__(self, numChannel, dropout=0.3, xTrapParam=None):
         # 参数
-        self.contextFreePredict = None
+        self.context_free_pred = None
         self.ALPHA = None
         self.STA = None
         self.UNK = None
@@ -25,7 +25,7 @@ class DecoupledTextDecoder(nn.Module):
         self.UNK = torch.nn.Parameter(self.normedInit(self.numChannel))
         self.UNK_SCR = torch.nn.Parameter(torch.zeros([1, 1]), requires_grad=True)
         self.ALPHA = torch.nn.Parameter(torch.ones([1, 1]), requires_grad=True)
-        self.contextFreePredict = torch.nn.Linear(self.numChannel, self.numChannel)
+        self.context_free_pred = torch.nn.Linear(self.numChannel, self.numChannel)
 
         self.register_parameter("STA", self.STA)
         self.register_parameter("UNK", self.UNK)
