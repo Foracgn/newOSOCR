@@ -31,3 +31,4 @@ class PositionalEncoding(nn.Module):
             },
             dropout=0.3
         )
+        self.dwcore.dev_ind = torch.nn.Parameter(torch.rand([1]))
