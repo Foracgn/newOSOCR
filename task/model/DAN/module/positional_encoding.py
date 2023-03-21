@@ -1,6 +1,7 @@
 from torch import nn
 import torch
 from neko_sdk.ocr_modules.prototypers.neko_nonsemantical_prototyper_core import neko_nonsematical_prototype_core_basic
+import regex
 
 
 class PositionalEncoding(nn.Module):
@@ -34,3 +35,17 @@ class PositionalEncoding(nn.Module):
 
     def sampleTrain(self, label):
         return self.dwcore.sample_charset_by_text(label)
+
+    def encode(self, proto, pLabel, tdict, batch):
+        if not self.caseSensitive:
+            batch = [ch.lower() for ch in batch]
+        return self.encodeNaive(tdict, batch)
+
+    def encodeNaive(self, tdict, batch):
+        maxLen = max([len(regex.findall(r'\X', s, regex.U)) for s in batch])
+        out = torch.zeros(len(batch), maxLen + 1).long() + self.EOS
+        for i in range(0, len(batch)):
+            curEncoded = torch.tensor([tdict[char] if char in tdict else tdict["[UNK]"]
+                                        for char in regex.findall(r'\X', batch[i], regex.U)])
+            out[i][0:len(curEncoded)] = curEncoded
+        return out
