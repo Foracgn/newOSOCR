@@ -5,15 +5,16 @@ from neko_sdk.ocr_modules.prototypers.neko_nonsemantical_prototyper_core import 
 
 class PositionalEncoding(nn.Module):
     def __init__(self, metaPath, numChannel, caseSensitive, backbone=None, valFrac=0.8):
+        # 参数
+        self.DWCore = None
+
+        # 初始化
         super(PositionalEncoding, self).__init__()
         self.EOS = 0
         self.numChannel = numChannel
         self.caseSensitive = caseSensitive
         self.metaPath = metaPath
         self.setCore(backbone, valFrac)
-
-        # 参数
-        self.DWCore = None
 
     def setCore(self, backbone=None, valFrac=0.8):
         meta = torch.load(self.metaPath)
