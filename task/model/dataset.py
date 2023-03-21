@@ -46,7 +46,7 @@ class lmdbDataset(Dataset):
         fromWhich = self.__fromWhich__()
         if self.globalState == 'Train':
             index = random.randint(0, self.maxLen - 1)
-        index = (index % self.lengths[fromWhich]) + 1
+        index = index % self.lengths[fromWhich]
         with self.envs[fromWhich].begin(write=False) as res:
             imgKey = 'image-%09d' % index
 
