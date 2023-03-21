@@ -23,7 +23,7 @@ class PositionalEncoding(nn.Module):
             backbone,
             None,
             {
-                "masterShare": not self.caseSensitive,
+                "master_share": not self.caseSensitive,
                 "max_batch_size": 512,
                 "val_frac": valFrac,
                 "neg_servant": True
