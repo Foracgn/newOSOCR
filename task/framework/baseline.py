@@ -13,14 +13,6 @@ from neko_sdk.ocr_modules.trainable_losses.cosloss import neko_cos_loss2
 
 class BaselineDAN:
     def __init__(self, cfgs):
-        self.cfgs = cfgs
-        self.setupDataloader()
-        self.setup()
-
-        print("------------")
-        print('prepare done')
-        print("------------")
-
         # 类内变量
         self.model = None
 
@@ -41,6 +33,15 @@ class BaselineDAN:
         self.wemb = None
         self.wsim = None
         self.wcls = None
+
+        # 初始化
+        self.cfgs = cfgs
+        self.setupDataloader()
+        self.setup()
+
+        print("------------")
+        print('prepare done')
+        print("------------")
 
     def setup(self):
         self.model = net.loadNet(self.cfgs)
