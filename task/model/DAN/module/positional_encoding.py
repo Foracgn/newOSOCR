@@ -4,10 +4,10 @@ from neko_sdk.ocr_modules.prototypers.neko_nonsemantical_prototyper_core import 
 
 
 class PositionalEncoding(nn.Module):
-    def __init__(self, metaPath, nChannel, caseSensitive, backbone=None, valFrac=0.8):
+    def __init__(self, metaPath, numChannel, caseSensitive, backbone=None, valFrac=0.8):
         super(PositionalEncoding, self).__init__()
         self.EOS = 0
-        self.nChannel = nChannel
+        self.numChannel = numChannel
         self.caseSensitive = caseSensitive
         self.metaPath = metaPath
         self.setCore(backbone, valFrac)
@@ -18,7 +18,7 @@ class PositionalEncoding(nn.Module):
     def setCore(self, backbone=None, valFrac=0.8):
         meta = torch.load(self.metaPath)
         self.DWCore = neko_nonsematical_prototype_core_basic(
-            self.nChannel,
+            self.numChannel,
             meta,
             backbone,
             None,
