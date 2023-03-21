@@ -72,9 +72,9 @@ def loadNet(cfgs):
 def TrainOrEval(model, state='Train'):
     for one in model:
         if state == 'Train':
-            one.Train()
+            one.train()
         else:
-            one.Eval()
+            one.eval()
 
 
 def ZeroGrad(model):

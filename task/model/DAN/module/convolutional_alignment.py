@@ -68,8 +68,7 @@ class ConvolutionAlignment(nn.Module):
                 nn.Sequential(
                     nn.ConvTranspose2d(
                         numChannel, numChannel,
-                        tuple(kSizeDeConv[int(depth / 2) - i]),
-                        tuple(strides[int(depth / 2) - i]),
+                        tuple(kSizeDeConv[int(depth / 2) - i]), tuple(strides[int(depth / 2) - i]),
                         (int(kSizeDeConv[int(depth / 2) - i][0] / 4.), int(kSizeDeConv[int(depth / 2) - i][1] / 4.))),
                     nn.BatchNorm2d(numChannel),
                     nn.ReLU(True)
@@ -80,8 +79,7 @@ class ConvolutionAlignment(nn.Module):
                 nn.ConvTranspose2d(
                     numChannel,
                     maxT,
-                    tuple(kSizeDeConv[0]),
-                    tuple(strides[0]),
+                    tuple(kSizeDeConv[0]), tuple(strides[0]),
                     (int(kSizeDeConv[0][0] / 4.), int(kSizeDeConv[0][1] / 4.))),
                 nn.Sigmoid()
             )
@@ -93,12 +91,12 @@ class ConvolutionAlignment(nn.Module):
         for i in range(0, len(self.fpn)):
             x = self.fpn[i](x) + data[i + 1]
         convFeats = []
-        for i in range(0, len(self.conv)):
-            x = self.conv[i](x)
+        for i in range(0, len(self.convs)):
+            x = self.convs[i](x)
             convFeats.append(x)
-        for i in range(0, len(self.deConv) - 1):
-            x = self.deConvs[i](x)
+        for i in range(0, len(self.deconvs) - 1):
+            x = self.deconvs[i](x)
             f = convFeats[len(convFeats) - 2 - i]
             x = x[:, :, :f.shape[2], :f.shape[3]] + f
-        x = self.deConv[-1](x)
+        x = self.deconvs[-1](x)
         return x
