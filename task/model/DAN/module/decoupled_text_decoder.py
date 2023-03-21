@@ -5,19 +5,20 @@ import torch
 class DecoupledTextDecoder(nn.Module):
 
     def __init__(self, numChannel, dropout=0.3, xTrapParam=None):
-        super(DecoupledTextDecoder, self).__init__()
-        self.numChannel = numChannel
-        self.dropout = dropout
-        self.xTrapParam = xTrapParam
-        self.setModule()
-        self.baseline = 0
-
         # 参数
         self.contextFreePredict = None
         self.ALPHA = None
         self.STA = None
         self.UNK = None
         self.UNK_SCR = None
+
+        # 初始化
+        super(DecoupledTextDecoder, self).__init__()
+        self.numChannel = numChannel
+        self.dropout = dropout
+        self.xTrapParam = xTrapParam
+        self.setModule()
+        self.baseline = 0
 
     def setModule(self, dropout=0.3):
         self.STA = torch.nn.Parameter(self.normedInit(self.numChannel))
