@@ -101,7 +101,7 @@ class DecoupledTextDecoder(nn.Module):
     def predict(res, label, outLength, nB, nT):
         scores = scatter_cvt(res, label)
         start = 0
-        output = torch.zeros(int(outLength.sum()), label.max().item + 1).type_as(res.data)
+        output = torch.zeros(int(outLength.sum()), label.max().item() + 1).type_as(res.data)
         for i in range(0, nB):
             curLength = int(outLength[i])
             usedLength = min(nT, curLength)
