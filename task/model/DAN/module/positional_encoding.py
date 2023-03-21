@@ -31,7 +31,6 @@ class PositionalEncoding(nn.Module):
             },
             dropout=0.3
         )
-        self.dwcore.dev_ind = torch.nn.Parameter(torch.rand([1]))
 
     def sampleTrain(self, label):
         return self.dwcore.sample_charset_by_text(label)
