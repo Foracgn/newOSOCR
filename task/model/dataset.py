@@ -27,8 +27,13 @@ class lmdbDataset(Dataset):
         self.imgW = imgW
 
         if ratio is not None:
+            assert len(roots) == len(ratio)
             for i in range(0, len(roots)):
                 self.ratio.append(ratio[i] / float(sum(ratio)))
+        else:
+            for i in range(0, len(roots)):
+                self.ratio.append(self.lengths[i]/float(self.numSamples))
+
         if forceTargetRatio is None:
             self.targetRatio = imgW / float(imgH)
         else:
