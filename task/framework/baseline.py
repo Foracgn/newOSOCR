@@ -84,12 +84,12 @@ class BaselineDAN:
                     self.cfgs.savingConfigs['savingPath'] + 'E{}_M{}.pth'.format(nEpoch, i)
                 )
 
-    def runTest(self, miter, datasetPath, reject, debug=False):
+    def runTest(self, datasetPath, reject, debug=False):
         with torch.no_grad():
             tools = [self.testAccuracy, net.FlattenLabel]
             if reject:
                 tools = [None, net.FlattenLabel, self.testReject]
-            self.test(tools, miter=miter, debug=debug, datasetPath=datasetPath)
+            self.test(tools, miter=self.cfgs.globalConfigs['testMiter'], debug=debug, datasetPath=datasetPath)
             self.testAccuracy.clear()
 
     def test(self, tools, miter=1000, datasetPath=None, debug=False):
