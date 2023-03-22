@@ -50,7 +50,8 @@ class PositionalEncoding(nn.Module):
             out[i][0:len(curEncoded)] = curEncoded
         return out
 
-    def decode(self, outNet, length, protos, labels, tdict, thresh=None):
+    @staticmethod
+    def decode(outNet, length, protos, labels, tdict, thresh=None):
         outDecode = []
         outProbability = []
         outNet = nn.functional.softmax(outNet, dim=1)
