@@ -110,12 +110,7 @@ class BaselineDAN:
             for i in range(0, len(self.model)):
                 torch.save(
                     self.model[i].state_dict(),
-                    self.cfgs.savingConfigs['savingPath'] + 'E{}_I{}-{}_M{}.pth'.format(
-                        nEpoch,
-                        idx,
-                        tot,
-                        i
-                    )
+                    self.cfgs.savingConfigs['savingPath'][i]
                 )
 
     def fpbp(self, image, label, cased=None):  # Forward Propagation And Backward Propagation
