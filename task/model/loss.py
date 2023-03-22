@@ -63,7 +63,7 @@ class AccuracyCounter:
         if label is None:
             return
 
-        self.totalSamples += label
+        self.totalSamples += len(label)
         for i in range(0, len(predict)):
             if not self.caseSensitive:
                 predict[i] = predict[i].lower().replace("⑨", "")
@@ -117,7 +117,7 @@ class RejectAccuracyCounter:
         if label is None:
             return
 
-        self.totalSamples += label
+        self.totalSamples += len(label)
         for i in range(0, len(predict)):
             if not self.caseSensitive:
                 predict[i] = predict[i].lower()
