@@ -105,12 +105,12 @@ class BaselineDAN:
                 print(terms)
             self.show()
 
-        if nEpoch % self.cfgs.saving_cfgs['savingEpochInterval'] == 0 and \
-                idx % self.cfgs.saving_cfgs['savingEpochInterval'] == 0 and idx != 0:
+        if nEpoch % self.cfgs.savingConfigs['savingEpochInterval'] == 0 and \
+                idx % self.cfgs.savingConfigs['savingEpochInterval'] == 0 and idx != 0:
             for i in range(0, len(self.model)):
                 torch.save(
                     self.model[i].state_dict(),
-                    self.cfgs.saving_cfgs['savingPath'] + 'E{}_I{}-{}_M{}.pth'.format(
+                    self.cfgs.savingConfigs['savingPath'] + 'E{}_I{}-{}_M{}.pth'.format(
                         nEpoch,
                         idx,
                         tot,
