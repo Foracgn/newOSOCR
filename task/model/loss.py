@@ -29,7 +29,7 @@ class LossCounter:
             else:
                 if prefix + k not in self.termSum:
                     self.termSum[prefix + k] = 0
-                self.termSum[prefix + k] += float(prefix[k])
+                self.termSum[prefix + k] += float(terms[k])
 
     def getLoss(self):
         if self.iters > 0:
