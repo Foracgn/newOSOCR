@@ -6,7 +6,7 @@ saveRoot = ""
 
 
 class DanConfig:
-    def __init__(self, pathSet, num):
+    def __init__(self, pathSet, num, mode="Train"):
         self.datasetConfigs = dataset.getCompareDatasetConfig(
             pathSet.trainRoot[num],
             pathSet.trainDict[num],
@@ -14,7 +14,10 @@ class DanConfig:
             pathSet.testDict,
             T
         )
-        self.globalConfigs = train.getTrainCfg()
+        if mode == "Train":
+            self.globalConfigs = train.getTrainCfg()
+        else:
+            self.globalConfigs = train.getTestCfg()
         self.netConfigs = net.getNetConfig(pathSet.trainDict[num], pathSet.modelPath[num], T)
         self.optimizerConfigs = optimizer.getOpt()
         self.savingConfigs = train.getSaveCfg(pathSet.modelPath[num])

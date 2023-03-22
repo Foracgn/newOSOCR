@@ -59,7 +59,7 @@ class AccuracyCounter:
         self.displayString = key
         self.caseSensitive = sensitive
 
-    def addIter(self, predict, length, label):
+    def addIter(self, predict, length, label, debug=False):
         if label is None:
             return
 

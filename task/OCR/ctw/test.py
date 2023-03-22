@@ -1,21 +1,19 @@
 from __future__ import print_function
 from task.model.DAN import base
-import yaml
+from task.model import path
 from task.framework import baseline
 
-filepath = "/task/yaml/DAN.yaml"
-ctwConfig = yaml.load(filepath)
+pathSet = path.Path("./task/yaml/ctw.yaml", "basic")
 DICT = {
-    "500": base.DanConfig(),
-    "1000": base.DanConfig(),
-    "1500": base.DanConfig(),
-    "2000": base.DanConfig()
+    "task0": base.DanConfig,
+    "task1": base.DanConfig,
+    "task2": base.DanConfig,
+    "task3": base.DanConfig
 }
-root = "/"
 
 if __name__ == '__main__':
-    for k in DICT:
-        cfgs = DICT[k](root)
+    for i, k in enumerate(DICT):
+        cfgs = DICT[k](pathSet, i, "Test")
         runner = baseline.BaselineDAN(cfgs)
-
+        runner.runTest(pathSet.modelRoot, False)
         print(k, "Done")

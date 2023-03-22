@@ -6,9 +6,11 @@ import torch
 
 from task.common import loader, net, optimizer
 from task.model import loss
+from task.model.DAN import vis_dan
 
 from neko_sdk.ocr_modules.trainable_losses.neko_url import neko_unknown_ranking_loss
 from neko_sdk.ocr_modules.trainable_losses.cosloss import neko_cos_loss2
+from neko_sdk.ocr_modules.neko_confusion_matrix import neko_confusion_matrix
 
 
 class BaselineDAN:
@@ -82,6 +84,51 @@ class BaselineDAN:
                     self.cfgs.savingConfigs['savingPath'] + 'E{}_M{}.pth'.format(nEpoch, i)
                 )
 
+    def runTest(self, miter, datasetPath, reject, debug=False):
+        with torch.no_grad():
+            tools = [self.testAccuracy, net.FlattenLabel]
+            if reject:
+                tools = [None, net.FlattenLabel, self.testReject]
+            self.test(tools, miter=miter, debug=debug, datasetPath=datasetPath)
+            self.testAccuracy.clear()
+
+    def test(self, tools, miter=1000, datasetPath=None, debug=False):
+        net.TrainOrEval(self.model, 'Eval')
+        proto, semblance, pLabel, tdict = self.model[3].dump_all()
+        counter = 0
+        visualizer = None
+        if datasetPath is not None:
+            visualizer = vis_dan.VisDan(datasetPath)
+        confusionMatrix = neko_confusion_matrix()
+
+        for batch in self.testLoader:
+            if counter > miter:
+                break
+            counter += 1
+            image = batch['image']
+            label = batch['label']
+            target = self.model[3].encode(proto, pLabel, tdict, label)
+            image = image.cuda()
+            labelFlatten, length = tools[1](target)
+            target.cuda()
+            labelFlatten.cuda()
+            features = self.model[0](image)
+            one = self.model[1](features)
+            output, outLength, one = self.model[2](features[-1], proto, semblance, pLabel, one, None, length, True)
+            charOutput, predictProb = self.model[3].decode(output, outLength, proto, pLabel, tdict)
+            tools[0].addIter(charOutput, outLength, label, debug)
+
+            for i in range(len(charOutput)):
+                confusionMatrix.addpairquickandugly(charOutput[i], label[i])
+
+            if visualizer is not None:
+                visualizer.addBatch(image, one, label, charOutput)
+
+        if datasetPath is not None:
+            confusionMatrix.save_matrix(datasetPath)
+        tools[0].show()
+        net.TrainOrEval(self.model, 'Train')
+
     def trainIter(self, nEpoch, idx, batch, tot):
         if 'cased' in batch:
             self.fpbp(batch['image'], batch['label'], batch['cased'])
@@ -126,12 +173,13 @@ class BaselineDAN:
         features = self.model[0](image)
         one = self.model[1](features)
 
+        # TODO train accuracy
         outCls, outCos = self.model[2](features[-1], proto, semblance, pLabel, one, target, length)
         charOutput, predictProb = self.model[3].decode(outCls, length, proto, pLabel, tdict)
         labels = ["".join([tdict[i.item()] for i in target[j]]).replace('[s]', "") for j in
                   range(len(target))]
         self.trainAccuracy.addIter(charOutput, length, labels)
-        protoLoss = nn.functional.relu(proto[1:].matmul(proto[1:].T)-0.14).mean()
+        protoLoss = nn.functional.relu(proto[1:].matmul(proto[1:].T) - 0.14).mean()
         res = torch.ones_like(torch.ones(outCls.shape[-1])).to(proto.device).float()
         res[-1] = 0.1
         CLSLoss = nn.functional.cross_entropy(outCls, labelFlatten, res)
