@@ -46,6 +46,30 @@ class PositionalEncoding(nn.Module):
         out = torch.zeros(len(batch), maxLen + 1).long() + self.EOS
         for i in range(0, len(batch)):
             curEncoded = torch.tensor([tdict[char] if char in tdict else tdict["[UNK]"]
-                                        for char in regex.findall(r'\X', batch[i], regex.U)])
+                                       for char in regex.findall(r'\X', batch[i], regex.U)])
             out[i][0:len(curEncoded)] = curEncoded
         return out
+
+    def decode(self, outNet, length, protos, labels, tdict, thresh=None):
+        outDecode = []
+        outProbability = []
+        outNet = nn.functional.softmax(outNet, dim=1)
+        for i in range(0, length.shape[0]):
+            curIndexList = outNet[
+                           int(length[:i].sum()): int(length[:i].sum() + length[i])
+                           ].topk(1)[1][:, 0].tolist()
+
+            curText = ''.join([tdict[_] if 0 < _ <= len(tdict) else '' for _ in curIndexList])
+            curProbability = outNet[int(length[:i].sum()): int(length[:i].sum() + length[i])].topk(1)[0][:, 0]
+            curProbability = torch.exp(torch.log(curProbability).sum() / curProbability.size()[0])
+            if thresh is not None:
+                filteredText = []
+                for j in range(len(curText)):
+                    if curProbability[j] > thresh:
+                        filteredText.append(curText[j])
+                    else:
+                        filteredText.append('⑨')
+                curText = ''.join(filteredText)
+            outDecode.append(curText)
+            outProbability.append(curProbability)
+        return outDecode, outProbability
