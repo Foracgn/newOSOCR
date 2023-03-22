@@ -22,7 +22,7 @@ def getTestCfg():
 
 def getSaveCfg(saveRoot):
     return{
-        'saving_iter_interval': 20000,
-        'saving_epoch_interval': 1,
+        'savingIterInterval': 20000,
+        'savingEpochInterval': 1,
         'savingPath': saveRoot
     }
