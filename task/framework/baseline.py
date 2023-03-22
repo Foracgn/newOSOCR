@@ -78,7 +78,7 @@ class BaselineDAN:
             optimizer.UpdatePara(self.optimizerSchedulers, frozen=[])
             for i in range(0, len(self.model)):
                 torch.save(
-                    self.model[i].stateDict(),
+                    self.model[i].state_dict(),
                     self.cfgs.savingConfigs['savingPath'] + 'E{}_M{}.pth'.format(nEpoch, i)
                 )
 
