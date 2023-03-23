@@ -50,6 +50,9 @@ class PositionalEncoding(nn.Module):
             out[i][0:len(curEncoded)] = curEncoded
         return out
 
+    def dumpAll(self):
+        return self.dwcore.dump_all()
+
     @staticmethod
     def decode(outNet, length, protos, labels, tdict, thresh=None):
         outDecode = []

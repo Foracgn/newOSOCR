@@ -94,7 +94,7 @@ class BaselineDAN:
 
     def test(self, tools, miter=1000, datasetPath=None, debug=False):
         net.TrainOrEval(self.model, 'Eval')
-        proto, semblance, pLabel, tdict = self.model[3].dump_all()
+        proto, semblance, pLabel, tdict = self.model[3].dumpAll()
         counter = 0
         visualizer = None
         if datasetPath is not None:
