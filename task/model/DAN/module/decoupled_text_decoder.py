@@ -63,7 +63,7 @@ class DecoupledTextDecoder(nn.Module):
     def forwardTest(self, protos, semblance, labels, nB, C, nT):
         outCls, _ = self.loop(C, protos, semblance, labels, nT, nB, None)
         outLength = self.prob_length(outCls, nT, nB)
-        output = self.pred(outCls, labels, outLength, nB, nT)
+        output = self.predict(outCls, labels, outLength, nB, nT)
         return output, outLength
 
     def loop(self, C, protos, semblance, labels, steps, nB, hype):
