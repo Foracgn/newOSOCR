@@ -63,7 +63,7 @@ def loadNet(cfgs):
     # 位置编码 Positional Encoding
     modelPE = cfgs.netConfigs['PE'](**cfgs.netConfigs['PEConfigs'])
     if cfgs.netConfigs['initStateDictPE'] is not None:
-        modelPE.load_state_dict(torch.load(cfgs.netConfigs['initStateDictPE']))
+        modelPE.load_state_dict(torch.load(cfgs.netConfigs['initStateDictPE']), strict=False)
     modelPE.cuda()
 
     return modelFE, modelCAM, modelDTD, modelPE

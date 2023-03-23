@@ -11,7 +11,6 @@ from task.model.DAN import vis_dan
 
 from neko_sdk.ocr_modules.trainable_losses.neko_url import neko_unknown_ranking_loss
 from neko_sdk.ocr_modules.trainable_losses.cosloss import neko_cos_loss2
-from neko_sdk.ocr_modules.neko_confusion_matrix import neko_confusion_matrix
 from neko_sdk.ocr_modules.prototypers.neko_prototyper_core import neko_prototype_core_basic_shared
 
 
@@ -98,7 +97,7 @@ class BaselineDAN:
         net.TrainOrEval(self.model, 'Eval')
 
         testMeta = None
-        if "testMeta" in self.cfgs.datasetConfigs["testMeta"]:
+        if "testMeta" in self.cfgs.datasetConfigs:
             testMeta = torch.load(self.cfgs.datasetConfigs["testMeta"])
 
         if testMeta is None:
@@ -107,6 +106,7 @@ class BaselineDAN:
             testCore = neko_prototype_core_basic_shared(testMeta, self.model[3].dwcore)
             testCore.cuda()
             proto, pLabel, testDict = testCore.dump_all()
+            # TODO: tdict
             semblance = None
 
         counter = 0

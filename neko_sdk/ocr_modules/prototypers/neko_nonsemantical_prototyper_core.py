@@ -19,6 +19,7 @@ class neko_nonsematical_prototype_core_basic(neko_prototype_core_basic):
                  sampler_args=None,
                  dropout=None,
                  ):
+        super().__init__(output_channel, meta, backbone, preload_tensor, sampler_args, dropout)
         self.label_set = None
         self.drop = None
         self.dev_ind = None
@@ -31,7 +32,6 @@ class neko_nonsematical_prototype_core_basic(neko_prototype_core_basic):
         self.shaped_characters = None
         self.aligned_characters = None
         self.sp_tokens = None
-        super().__init__(output_channel, meta, backbone, preload_tensor, sampler_args, dropout)
 
     def arm_meta(self, meta, preload_tensor):
         if meta is None:
