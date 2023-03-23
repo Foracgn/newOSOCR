@@ -69,7 +69,7 @@ class DecoupledTextDecoder(nn.Module):
     def loop(self, C, protos, semblance, labels, steps, nB, hype):
         out_res_cf = torch.zeros(steps, nB, protos.shape[0] + 1).type_as(C.data) + self.UNK_SCR
         sim_score = torch.zeros(steps, nB, protos.shape[0] + 1).type_as(C.data) + self.UNK_SCR
-        # hidden=C;
+
         hidden = self.context_free_pred(C)
         cfPredict = hidden.matmul(protos.t())
 

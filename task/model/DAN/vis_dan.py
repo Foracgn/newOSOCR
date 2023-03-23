@@ -46,3 +46,18 @@ class VisDan:
             maskName = attName(self.datasetPath, id, i)
             cv2.imwrite(maskName,
                         (mask[i] * 200 * oneBatch + 56 * oneBatch)[0].detach().cpu().numpy().astype(np.uint8))
+
+    def addImage(self, images, label, repCharOutput, charOutput, names):
+        batchSize = images[0].shape[0]
+        for i in range(batchSize):
+            for j in range(len(images)):
+                imagePath = imageName(self.datasetPath, str(self.counter) + names[j])
+                cv2.imwrite(imagePath, (images[j][i] * 255).permute(1, 2, 0).detach().cpu().numpy().astype(np.uint8))
+            self.writeImage(self.counter, label[i], charOutput[i], repCharOutput[i])
+            self.counter += 1
+
+    def writeImage(self, index, label, out, repOut):
+        resPath = resName(self.datasetPath, index)
+        with open(resPath, "w+") as fp:
+            fp.write(label+"\n")
+            fp.write(out+"\n")

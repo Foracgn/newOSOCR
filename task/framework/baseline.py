@@ -4,6 +4,7 @@ from torch.utils.data import DataLoader
 from torch import nn
 import torch
 
+from neko_sdk.AOF.neko_lens import vis_lenses
 from task.common import loader, net, optimizer
 from task.model import loss
 from task.model.DAN import vis_dan
@@ -11,6 +12,7 @@ from task.model.DAN import vis_dan
 from neko_sdk.ocr_modules.trainable_losses.neko_url import neko_unknown_ranking_loss
 from neko_sdk.ocr_modules.trainable_losses.cosloss import neko_cos_loss2
 from neko_sdk.ocr_modules.neko_confusion_matrix import neko_confusion_matrix
+from neko_sdk.ocr_modules.prototypers.neko_prototyper_core import neko_prototype_core_basic_shared
 
 
 class BaselineDAN:
@@ -94,39 +96,53 @@ class BaselineDAN:
 
     def test(self, tools, miter=1000, datasetPath=None, debug=False):
         net.TrainOrEval(self.model, 'Eval')
-        proto, semblance, pLabel, tdict = self.model[3].dumpAll()
+
+        testMeta = None
+        if "testMeta" in self.cfgs.datasetConfigs["testMeta"]:
+            testMeta = torch.load(self.cfgs.datasetConfigs["testMeta"])
+
+        if testMeta is None:
+            proto, semblance, pLabel, testDict = self.model[3].dumpAll()
+        else:
+            testCore = neko_prototype_core_basic_shared(testMeta, self.model[3].dwcore)
+            testCore.cuda()
+            proto, pLabel, testDict = testCore.dump_all()
+            semblance = None
+
         counter = 0
+        allLength = 0
         visualizer = None
         if datasetPath is not None:
             visualizer = vis_dan.VisDan(datasetPath)
-        confusionMatrix = neko_confusion_matrix()
-
         for batch in self.testLoader:
             if counter > miter:
                 break
             counter += 1
             image = batch['image']
             label = batch['label']
-            target = self.model[3].encode(proto, pLabel, tdict, label)
+            target = self.model[3].encode(proto, pLabel, testDict, label)
+
+            allLength += image.shape[0]
             image = image.cuda()
-            labelFlatten, length = tools[1](target)
-            target.cuda()
-            labelFlatten.cuda()
+            target = target
+            labelFlatten, labelLength = tools[1](target)
+
             features = self.model[0](image)
             one = self.model[1](features)
-            output, outLength, one = self.model[2](features[-1], proto, semblance, pLabel, one, None, length, True)
-            charOutput, predictProb = self.model[3].decode(output, outLength, proto, pLabel, tdict)
+            output, outLength, one = self.model[2](features[-1], proto, semblance, pLabel, one, None, labelLength, True)
+            charOutput, predictProb = self.model[3].decode(output, outLength, proto, pLabel, testDict)
+
+            repCharOutput = [[i] for i in charOutput]
+            # reject
             tools[0].addIter(charOutput, outLength, label, debug)
-
-            for i in range(len(charOutput)):
-                confusionMatrix.addpairquickandugly(charOutput[i], label[i])
-
-            if visualizer is not None:
-                visualizer.addBatch(image, one, label, charOutput)
-
-        if datasetPath is not None:
-            confusionMatrix.save_matrix(datasetPath)
+            if datasetPath:
+                features, grid = self.model[0](image, True)
+                if len(grid) > 0:
+                    resData = vis_lenses(image, grid)[1]
+                    if visualizer is not None:
+                        visualizer.addImage([image, resData], label, repCharOutput, charOutput, ["before", "after"])
         tools[0].show()
+        print(all)
         net.TrainOrEval(self.model, 'Train')
 
     def trainIter(self, nEpoch, idx, batch, tot):

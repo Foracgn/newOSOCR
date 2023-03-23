@@ -7,6 +7,8 @@ class ConvolutionAlignment(nn.Module):
         netRes = []
         # fpn: feature pyramid network
         for i in range(1, len(scales)):
+            assert not (scales[i - 1][1] / scales[i][1]) % 1, 'layers scale error, from {} to {}'.format(i - 1, i)
+            assert not (scales[i - 1][2] / scales[i][2]) % 1, 'layers scale error, from {} to {}'.format(i - 1, i)
             kSize = [3, 3, 5]
             rH = int(scales[i - 1][1] / scales[i][1])
             rW = int(scales[i - 1][2] / scales[i][2])
@@ -25,6 +27,7 @@ class ConvolutionAlignment(nn.Module):
                 )
             )
         self.fpn = nn.Sequential(*netRes)
+        assert depth % 2 == 0, 'the depth of CAM must be a even number.'
         inShape = scales[-1]
         strides = []
         kSizeConv = []
@@ -57,7 +60,8 @@ class ConvolutionAlignment(nn.Module):
                         tuple(kSizeConv[i]), tuple(strides[i]),
                         (int((kSizeConv[i][0] - 1) / 2), int((kSizeConv[i][1] - 1) / 2))
                     ),
-                    nn.BatchNorm2d(numChannel), nn.ReLU(True)
+                    nn.BatchNorm2d(numChannel),
+                    nn.ReLU(True)
                 )
             )
         self.convs = nn.Sequential(*convRes)
@@ -80,7 +84,8 @@ class ConvolutionAlignment(nn.Module):
                     numChannel,
                     maxT,
                     tuple(kSizeDeConv[0]), tuple(strides[0]),
-                    (int(kSizeDeConv[0][0] / 4.), int(kSizeDeConv[0][1] / 4.))),
+                    (int(kSizeDeConv[0][0] / 4.), int(kSizeDeConv[0][1] / 4.))
+                ),
                 nn.Sigmoid()
             )
         )
