@@ -7,8 +7,7 @@ pathSet = path.Path("./task/yaml/ctw.yaml", "basic")
 DICT = {
     "task0": base.DanConfig,
     "task1": base.DanConfig,
-    "task2": base.DanConfig,
-    "task3": base.DanConfig
+    "task2": base.DanConfig
 }
 
 if __name__ == '__main__':

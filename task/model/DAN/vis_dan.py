@@ -30,7 +30,7 @@ class VisDan:
         length = batch.shape[0]
         masks = nn.functional.interpolate(one, [batch.shape[2], batch.shape[3]], mode='bilinear')
 
-        for i in length:
+        for i in range(length):
             self.write(self.counter, batch[i], masks[i], label[i], out[i])
             self.counter += 1
 
