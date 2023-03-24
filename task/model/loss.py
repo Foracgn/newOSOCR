@@ -113,7 +113,7 @@ class RejectAccuracyCounter:
         self.Kcorr = 0.
         self.KtU = 0.
 
-    def addIter(self, predict, label):
+    def addIter(self, predict, labelLength, label, debug=False):
         if label is None:
             return
 

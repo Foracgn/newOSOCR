@@ -2,7 +2,7 @@ import yaml
 
 
 class Path:
-    def __init__(self, constPath, setType, ):
+    def __init__(self, constPath, setType, testType, rejDict='Test'):
         # 参数
         self.modelPath = []
         self.trainRoot = []
@@ -22,8 +22,12 @@ class Path:
 
         self.datasetRoot = setConfigs['datasetRoot']
 
-        self.testRoot = self.datasetRoot + setConfigs['test']['root']
-        self.testDict = self.datasetRoot + setConfigs['test']['dict']
+        if testType == "test":
+            self.testRoot = self.datasetRoot + setConfigs['test']['root']
+            self.testDict = self.datasetRoot + setConfigs['test']['dict']
+        elif testType == "rej":
+            self.testRoot = self.datasetRoot + setConfigs['test']['root']
+            self.testDict = self.datasetRoot + setConfigs['test'][rejDict]
 
         for i in range(0, 4):
             self.trainRoot.append(self.datasetRoot + setConfigs['train']['root'+str(i)])
