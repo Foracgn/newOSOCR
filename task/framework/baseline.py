@@ -89,11 +89,11 @@ class BaselineDAN:
         with torch.no_grad():
             tools = [self.testAccuracy, net.FlattenLabel]
             if reject:
-                tools = [None, net.FlattenLabel, self.testReject]
-            self.test(tools, miter=self.cfgs.globalConfigs['testMiter'], debug=debug, datasetPath=None)
+                tools = [self.testReject, net.FlattenLabel]
+            self.test(tools, miter=self.cfgs.globalConfigs['testMiter'], datasetPath=None, reject=reject, debug=debug)
             self.testAccuracy.clear()
 
-    def test(self, tools, miter=1000, datasetPath=None, debug=False):
+    def test(self, tools, miter=1000, datasetPath=None, reject=False, debug=False):
         net.TrainOrEval(self.model, 'Eval')
 
         testMeta = None
@@ -134,7 +134,14 @@ class BaselineDAN:
 
             repCharOutput = [[i] for i in charOutput]
             # reject
-            tools[0].addIter(charOutput, outLength, label, debug)
+            if reject:
+                unknownLabel = []
+                for oneLabel in label:
+                    unknownLabel.append("".join([c if c in testDict else "⑨" for c in oneLabel]))
+                prefixSet = [b[0] for b in repCharOutput]
+                tools[0].addIter(prefixSet, outLength, unknownLabel, debug)
+            else:
+                tools[0].addIter(charOutput, outLength, label, debug)
             if datasetPath:
                 features, grid = self.model[0](image, True)
                 if len(grid) > 0:
