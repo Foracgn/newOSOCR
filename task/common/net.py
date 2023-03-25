@@ -6,7 +6,7 @@ from task.model.DAN.module import feature_extractor as fe
 from task.model.DAN.module import positional_encoding as pe
 
 
-def getNetConfig(metaPath, modelPath, maxT, valFrac=0.8):
+def getNetConfig(metaPath, modelPath, maxT, valFrac=0.8, mode="Test"):
     configs = makeNetConfig(
         fe.FeatureExtractor,
         cam.ConvolutionAlignment,
@@ -17,7 +17,7 @@ def getNetConfig(metaPath, modelPath, maxT, valFrac=0.8):
         maxT,
         valFrac
     )
-    makeToken(configs, modelPath)
+    makeToken(configs, modelPath, mode)
     return configs
 
 
@@ -34,11 +34,17 @@ def makeNetConfig(FE, CAM, DTD, PE, hardness, metaPath, maxT, valFrac=0.8):
     }
 
 
-def makeToken(configs, modelPath):
-    configs['initStateDictFE'] = modelPath[0]
-    configs['initStateDictCAM'] = modelPath[1]
-    configs['initStateDictDTD'] = modelPath[2]
-    configs['initStateDictPE'] = modelPath[3]
+def makeToken(configs, modelPath, mode="Test"):
+    if mode == "Test":
+        configs['initStateDictFE'] = modelPath[0]
+        configs['initStateDictCAM'] = modelPath[1]
+        configs['initStateDictDTD'] = modelPath[2]
+        configs['initStateDictPE'] = modelPath[3]
+    else:
+        configs['initStateDictFE'] = None
+        configs['initStateDictCAM'] = None
+        configs['initStateDictDTD'] = None
+        configs['initStateDictPE'] = None
 
     return configs
 

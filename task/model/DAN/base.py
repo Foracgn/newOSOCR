@@ -18,7 +18,7 @@ class DanConfig:
             self.globalConfigs = train.getTrainCfg()
         else:
             self.globalConfigs = train.getTestCfg()
-        self.netConfigs = net.getNetConfig(pathSet.trainDict[num], pathSet.modelPath[num], T)
+        self.netConfigs = net.getNetConfig(pathSet.trainDict[num], pathSet.modelPath[num], T, "Train")
         self.optimizerConfigs = optimizer.getOpt()
         self.savingConfigs = train.getSaveCfg(pathSet.modelPath[num])
         self.lossWeight = loss.cls_emb[1]

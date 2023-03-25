@@ -2,7 +2,7 @@ import yaml
 
 
 class Path:
-    def __init__(self, constPath, setType, testType, rejDict='Test'):
+    def __init__(self, constPath, setType, testType="test", rejDict='Test'):
         # 参数
         self.modelPath = []
         self.trainRoot = []

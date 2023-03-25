@@ -7,12 +7,13 @@ pathSet = path.Path("./task/yaml/ctw.yaml", "basic")
 DICT = {
     "task0": base.DanConfig,
     "task1": base.DanConfig,
-    "task2": base.DanConfig
+    "task2": base.DanConfig,
+    "task3": base.DanConfig
 }
 
 if __name__ == '__main__':
     for i, k in enumerate(DICT):
-        cfgs = DICT[k](pathSet, i)
+        cfgs = DICT[k](pathSet, i, "Train")
         runner = baseline.BaselineDAN(cfgs)
         runner.run(pathSet.modelRoot, False)
         print(k, "Done")
