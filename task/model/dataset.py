@@ -7,7 +7,7 @@ import six
 from PIL import Image
 
 
-class lmdbDataset(Dataset):
+class LmdbDataset(Dataset):
     def __init__(self, roots=None, ratio=None, imgH=32, imgW=128, transform=None, globalState='Test', maxT=25, repeat=1,
                  qhbAUG=False, forceTargetRatio=None):
         self.envs = []
@@ -32,7 +32,7 @@ class lmdbDataset(Dataset):
                 self.ratio.append(ratio[i] / float(sum(ratio)))
         else:
             for i in range(0, len(roots)):
-                self.ratio.append(self.lengths[i]/float(self.numSamples))
+                self.ratio.append(self.lengths[i] / float(self.numSamples))
 
         if forceTargetRatio is None:
             self.targetRatio = imgW / float(imgH)
@@ -126,3 +126,40 @@ class lmdbDataset(Dataset):
 
     def __len__(self):
         return self.numSamples
+
+
+class LmdbDatasetTrain(LmdbDataset):
+
+    def __getitem__(self, index):
+        index %= self.numSamples
+        fromWhich = self.__fromWhich__()
+        if self.globalState == 'Train':
+            index = random.randint(0, self.maxLen - 1)
+
+        index = index % self.lengths[fromWhich]
+        index += 1
+
+        with self.envs[fromWhich].begin(write=False) as res:
+            imgKey = 'image-%09d' % index
+            imgBuff = res.get(imgKey.encode())
+            buff = six.BytesIO()
+            buff.write(imgBuff)
+            buff.seek(0)
+            img = Image.open(buff)
+
+            labelKey = 'label-%09d' % index
+            label = str(res.get(labelKey.encode()).decode())
+
+            if len(label) > self.maxT-1 and self.globalState == 'Train':
+                print("sample too long")
+                return self[index+1]
+
+            img = self.keepRatioResize(img)
+            img = img[:, :, np.newaxis]
+            if self.transform:
+                img = self.transform(img)
+            sample = {
+                'image': img,
+                'label': label
+            }
+            return sample

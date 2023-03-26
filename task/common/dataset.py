@@ -1,11 +1,11 @@
 import task.model.dataset
 from torchvision import transforms
-from task.model.dataset import lmdbDataset
+from task.model.dataset import LmdbDataset, LmdbDatasetTrain
 
 
 def getDatasetConfig(maxT, root, dictPath):
     return {
-        'dataset': lmdbDataset,
+        'dataset': LmdbDataset,
         'datesetConfigs': {
             'root': root,
             'imgHeight': 32,
@@ -27,7 +27,7 @@ def getDatasetConfig(maxT, root, dictPath):
 # Todo:dataset train
 def getCompareDatasetConfig(trainRoot, trainDict, testRoot, testDict, maxT=25):
     return {
-        'datasetTrain': lmdbDataset,
+        'datasetTrain': LmdbDatasetTrain,
         'datasetTrainConfigs': {
             'repeat': 1,
             'roots': [trainRoot],
@@ -44,7 +44,7 @@ def getCompareDatasetConfig(trainRoot, trainDict, testRoot, testDict, maxT=25):
         },
         'trainCaseSensitive': False,
         'trainMeta': trainDict,
-        'datasetTest': lmdbDataset,
+        'datasetTest': LmdbDataset,
         'datasetTestConfigs': {
             'roots': [testRoot],
             'imgH': 32,
