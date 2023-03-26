@@ -26,8 +26,8 @@ class Path:
             self.testRoot = self.datasetRoot + setConfigs['test']['root']
             self.testDict = self.datasetRoot + setConfigs['test']['dict']
         elif testType == "rej":
-            self.testRoot = self.datasetRoot + setConfigs['test']['root']
-            self.testDict = self.datasetRoot + setConfigs['test'][rejDict]
+            self.testRoot = self.datasetRoot + setConfigs['test_rej']['root']
+            self.testDict = self.datasetRoot + setConfigs['test_rej'][rejDict]
 
         for i in range(0, 4):
             self.trainRoot.append(self.datasetRoot + setConfigs['train']['root'+str(i)])

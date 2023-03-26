@@ -13,7 +13,7 @@ DICT = {
 
 if __name__ == '__main__':
     for i, k in enumerate(DICT):
-        pathSet = path.Path("./task/yaml/ctw.yaml", "basic", "rej", DICT[i])
+        pathSet = path.Path("./task/yaml/ctw.yaml", "basic", "rej", k)
         cfgs = base.DanConfig(pathSet, i, "Test")
         runner = baseline.BaselineDAN(cfgs)
         runner.runTest(pathSet.modelRoot, reject=True)
