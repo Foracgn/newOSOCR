@@ -13,7 +13,7 @@ DICT = {
 
 if __name__ == '__main__':
     for i, k in enumerate(DICT):
-        cfgs = DICT[k](pathSet, i, "Train")
+        cfgs = DICT[k](pathSet, i, mode="Train")
         runner = baseline.BaselineDAN(cfgs)
         runner.run(pathSet.modelRoot, False)
         print(k, "Done")

@@ -17,7 +17,7 @@ def getNetConfig(metaPath, modelPath, maxT, valFrac=0.8, mode="Test"):
         maxT,
         valFrac
     )
-    makeToken(configs, modelPath, mode)
+    makeToken(configs, modelPath, mode=mode)
     return configs
 
 
