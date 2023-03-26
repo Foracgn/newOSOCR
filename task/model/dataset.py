@@ -131,8 +131,9 @@ class LmdbDataset(Dataset):
 
 class LmdbDatasetTrain(LmdbDataset):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, roots=None, ratio=None, imgH=32, imgW=128, transform=None, globalState='Test', maxT=25, repeat=1,
+                 qhbAUG=False, forceTargetRatio=None):
+        super().__init__(roots, ratio, imgH, imgW, transform, globalState, maxT, repeat, qhbAUG, forceTargetRatio)
         self.cache = {}
         self.chCounter = {}
 
