@@ -8,6 +8,7 @@ from PIL import Image
 
 
 class LmdbDataset(Dataset):
+
     def __init__(self, roots=None, ratio=None, imgH=32, imgW=128, transform=None, globalState='Test', maxT=25, repeat=1,
                  qhbAUG=False, forceTargetRatio=None):
         self.envs = []
@@ -130,15 +131,12 @@ class LmdbDataset(Dataset):
 
 class LmdbDatasetTrain(LmdbDataset):
 
-    def __getitem__(self, index):
-        index %= self.numSamples
-        fromWhich = self.__fromWhich__()
-        if self.globalState == 'Train':
-            index = random.randint(0, self.maxLen - 1)
+    def __init__(self):
+        super().__init__()
+        self.cache = {}
+        self.chCounter = {}
 
-        index = index % self.lengths[fromWhich]
-        index += 1
-
+    def grab(self, fromWhich, index):
         with self.envs[fromWhich].begin(write=False) as res:
             imgKey = 'image-%09d' % index
             imgBuff = res.get(imgKey.encode())
@@ -148,18 +146,47 @@ class LmdbDatasetTrain(LmdbDataset):
             img = Image.open(buff)
 
             labelKey = 'label-%09d' % index
-            label = str(res.get(labelKey.encode()).decode())
+            label = str(res.get(labelKey.encode()).decode('utf-8'))
+            if len(label) > self.maxT - 1 and self.globalState == 'Train':
+                print('sample too long')
+                return self[index + 1]
 
-            if len(label) > self.maxT-1 and self.globalState == 'Train':
-                print("sample too long")
-                return self[index+1]
-
-            img = self.keepRatioResize(img)
+            img, mask = self.keepRatioResize(img)
             img = img[:, :, np.newaxis]
             if self.transform:
                 img = self.transform(img)
-            sample = {
-                'image': img,
-                'label': label
-            }
+            sample = {'image': img, 'label': label}
+
             return sample
+
+    def __getitem__(self, index):
+        index %= self.numSamples
+        fromWhich = self.__fromWhich__()
+        if self.globalState == 'Train':
+            index = random.randint(0, self.maxLen - 1)
+
+        index = index % self.lengths[fromWhich]
+        index += 1
+        if len(self.cache) and random.randint(0, 10) > 7:
+            ks = list(self.cache.keys())
+            fs = [1. / self.chCounter[k] for k in ks]
+            k = random.choices(ks, fs)[0]
+            chFromWhich, chIndex = self.cache[k]
+            sample = self.grab(chFromWhich, chIndex)
+        else:
+            sample = self.grab(fromWhich, index)
+            minCh = np.inf
+            minK = None
+            for ch in sample["label"]:
+                if ch not in self.chCounter:
+                    self.chCounter[ch] = 0
+                self.chCounter[ch] += 1
+                if self.chCounter[ch] < minCh:
+                    minCh = self.chCounter[ch]
+                    minK = ch
+            if minK:
+                self.cache[minK] = (fromWhich, index)
+
+        for ch in sample["label"]:
+            self.chCounter[ch] += 1
+        return sample
