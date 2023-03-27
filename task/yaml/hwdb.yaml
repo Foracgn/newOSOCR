@@ -1,0 +1,45 @@
+
+modelRoot: ./prfinal/hwdb
+
+basic:
+  FE0: /basic_hwdb_CE_alter_500_E9_M0.pth
+  CAM0: /basic_hwdb_CE_alter_500_E9_M1.pth
+  DTD0: /basic_hwdb_CE_alter_500_E9_M2.pth
+  PE0: /basic_hwdb_CE_alter_500_E9_M3.pth
+  FE1: /basic_hwdb_CE_alter_1000_E9_M0.pth
+  CAM1: /basic_hwdb_CE_alter_1000_E9_M1.pth
+  DTD1: /basic_hwdb_CE_alter_1000_E9_M2.pth
+  PE1: /basic_hwdb_CE_alter_1000_E9_M3.pth
+  FE2: /basic_hwdb_CE_alter_1500_E9_M0.pth
+  CAM2: /basic_hwdb_CE_alter_1500_E9_M1.pth
+  DTD2: /basic_hwdb_CE_alter_1500_E9_M2.pth
+  PE2: /basic_hwdb_CE_alter_1500_E9_M3.pth
+  FE3: /basic_hwdb_CE_alter_2000_E9_M0.pth
+  CAM3: /basic_hwdb_CE_alter_2000_E9_M1.pth
+  DTD3: /basic_hwdb_CE_alter_2000_E9_M2.pth
+  PE3: /basic_hwdb_CE_alter_2000_E9_M3.pth
+
+datasetRoot: ./packs
+
+test:
+  root: /hwdb/pami_ch_fsl_hwdb
+  dict: /hwdb/pami_ch_fsl_hwdb/cuwu_evalhwdbfsl_10_1/dict.pt
+
+test_rej:
+  root: /hwdb/pami_ch_fsl_hwdb/cuwu_evalhwdbfsl_10_1/
+  dict50: /hwdb/pami_ch_fsl_hwdb/cuwu_evalhwdbfsl_10_1/dictrej.pt
+  dict100: /hwdb/pami_ch_fsl_hwdb/cuwu_evalhwdbfsl_10_1/dictrej100.pt
+  dict150: /hwdb/pami_ch_fsl_hwdb/cuwu_evalhwdbfsl_10_1/dictrej200.pt
+  dict200: /hwdb/pami_ch_fsl_hwdb/cuwu_evalhwdbfsl_10_1/dictrej400.pt
+  dict250: /hwdb/pami_ch_fsl_hwdb/cuwu_evalhwdbfsl_10_1/dictrej500.pt
+
+
+train:
+  root0: /hwdb/hwdbfsl5_train/
+  dict0: /hwdb/hwdbfsl5_train/dict.pt
+  root1: /hwdb/hwdbfsl5_train/
+  dict1: /hwdb/hwdbfsl10_train/dict.pt
+  root2: /hwdb/hwdbfsl15_train/
+  dict2: /hwdb/hwdbfsl15_train/dict.pt
+  root3: /hwdb/hwdbfsl20_train/
+  dict3: /hwdb/hwdbfsl20_train/dict.pt
