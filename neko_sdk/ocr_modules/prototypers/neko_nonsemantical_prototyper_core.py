@@ -142,6 +142,7 @@ class neko_nonsematical_prototype_core_basic(neko_prototype_core_basic):
         return protos, [sembs_uncased, sembs_cased], [plabels_uncased, plabels_cased], [tdicts_uncased, tdicts_cased]
 
     def sample_charset_by_text(self, text_batch):
+        # entrance:make proto -> sample train
         b = ""
         for _ in text_batch:
             b += _
@@ -150,6 +151,7 @@ class neko_nonsematical_prototype_core_basic(neko_prototype_core_basic):
         trsps, trchs = self.get_sampled_ids(plain_chars_in_data)
         trchs = list(trchs)
         trsps = list(trsps)
+        # get proto -> proto engine -> resNet18
         protos = self.get_protos(trsps, trchs)
         plabels, sembs, tdicts = self.get_plabel_and_dict(trsps, trchs)
         # this.debug(trchs,"meow");

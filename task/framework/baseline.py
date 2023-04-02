@@ -153,6 +153,7 @@ class BaselineDAN:
         net.TrainOrEval(self.model, 'Train')
 
     def trainIter(self, nEpoch, idx, batch, tot):
+        # run NET DAN
         if 'cased' in batch:
             self.fpbp(batch['image'], batch['label'], batch['cased'])
         else:
@@ -161,6 +162,7 @@ class BaselineDAN:
         for one in self.model:
             nn.utils.clip_grad_norm(one.parameters(), 20, 2)
         optimizer.UpdatePara(self.optimizers, frozen=[])
+        # print
         if idx % self.cfgs.globalConfigs['showInterval'] == 0 and idx != 0:
 
             print(datetime.datetime.now().strftime('%H:%M:%S'))
@@ -185,36 +187,41 @@ class BaselineDAN:
 
     def fpbp(self, image, label, cased=None):  # Forward Propagation And Backward Propagation
         proto, semblance, pLabel, tdict = self.makeProto(label)
+        # TODO check target
         target = self.model[3].encode(proto, pLabel, tdict, label)
-
-        net.TrainOrEval(self.model, 'Train')
-        image = image.cuda()
         labelFlatten, length = net.FlattenLabel(target)
         target = target.cuda()
         labelFlatten = labelFlatten.cuda()
+        labels = ["".join([tdict[i.item()] for i in target[j]]).replace('[s]', "") for j in
+                  range(len(target))]
+
+        net.TrainOrEval(self.model, 'Train')
+        image = image.cuda()
         net.ZeroGrad(self.model)
         features = self.model[0](image)
         one = self.model[1](features)
 
-        # TODO train accuracy
-        outCls, outCos = self.model[2](features[-1], proto, semblance, pLabel, one, target, length)
+        outCls, outSim = self.model[2](features[-1], proto, semblance, pLabel, one, target, length)
+        # out, attention
         charOutput, predictProb = self.model[3].decode(outCls, length, proto, pLabel, tdict)
-        labels = ["".join([tdict[i.item()] for i in target[j]]).replace('[s]', "") for j in
-                  range(len(target))]
+
+        # 训练中预测结果
         self.trainAccuracy.addIter(charOutput, length, labels)
+
         protoLoss = nn.functional.relu(proto[1:].matmul(proto[1:].T) - 0.14).mean()
         res = torch.ones_like(torch.ones(outCls.shape[-1])).to(proto.device).float()
         res[-1] = 0.1
         CLSLoss = nn.functional.cross_entropy(outCls, labelFlatten, res)
-        COSLoss = self.cosLoss(outCos, labelFlatten)
+        SimLoss = self.cosLoss(outSim, labelFlatten)
         marginLoss = self.url.forward(outCls, labelFlatten, 0.5)
-        oneLoss = COSLoss * self.wsim + CLSLoss * self.wcls + marginLoss * self.wmar + self.wemb * protoLoss
+        # unknown ranking loss
+        oneLoss = SimLoss * self.wsim + CLSLoss * self.wcls + marginLoss * self.wmar + self.wemb * protoLoss
 
         terms = {
             'total': oneLoss.detach().item(),
             'margin': marginLoss.detach().item(),
             "main": CLSLoss.detach().item(),
-            "sim": COSLoss.detach().item(),
+            "sim": SimLoss.detach().item(),
             "emb": protoLoss.detach().item(),
         }
 

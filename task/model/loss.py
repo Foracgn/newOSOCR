@@ -137,6 +137,7 @@ class RejectAccuracyCounter:
             else:
                 self.totalK += 1
                 self.Kcorr += cflag
+                # TODO KtU添加确认
                 self.KtU += (predict[i].find("⑨") != -1)
 
     def show(self):

@@ -5,6 +5,7 @@ import random
 import lmdb
 import six
 from PIL import Image
+from neko_sdk.ocr_modules.qhbaug import qhbwarp
 
 
 class LmdbDataset(Dataset):
@@ -23,7 +24,7 @@ class LmdbDataset(Dataset):
         self.setDataset(roots)
 
         self.transform = transform
-        self.maxLen = len(self.lengths)
+        self.maxLen = max(self.lengths)
         self.imgH = imgH
         self.imgW = imgW
 
@@ -88,7 +89,7 @@ class LmdbDataset(Dataset):
         img = np.array(img)
 
         if self.qhbAUG:
-            img = 1
+            img = qhbwarp(img, 10)
         if len(img.shape) == 3:
             img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         if curRatio > self.targetRatio:

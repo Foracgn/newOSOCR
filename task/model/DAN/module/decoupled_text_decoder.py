@@ -55,10 +55,10 @@ class DecoupledTextDecoder(nn.Module):
 
     def forwardTrain(self, protos, semblance, labels, nB, C, nT, textLength, A, nW, nH, hype=None):
         steps = int(textLength.max())
-        outCls, outCos = self.loop(C, protos, semblance, labels, steps, nB, hype)
+        outCls, outSim = self.loop(C, protos, semblance, labels, steps, nB, hype)
         outCls = self.predict(outCls, labels, textLength, nB, nT)
-        outCos = self.predict(outCos, labels, textLength, nB, nT)
-        return outCls, outCos
+        outSim = self.predict(outSim, labels, textLength, nB, nT)
+        return outCls, outSim
 
     def forwardTest(self, protos, semblance, labels, nB, C, nT):
         outCls, _ = self.loop(C, protos, semblance, labels, nT, nB, None)
@@ -67,12 +67,15 @@ class DecoupledTextDecoder(nn.Module):
         return output, outLength
 
     def loop(self, C, protos, semblance, labels, steps, nB, hype):
+        # TODO
         out_res_cf = torch.zeros(steps, nB, protos.shape[0] + 1).type_as(C.data) + self.UNK_SCR
         sim_score = torch.zeros(steps, nB, protos.shape[0] + 1).type_as(C.data) + self.UNK_SCR
 
+        # context_free_predict:torch.nn.Linear(self.numChannel, self.numChannel)
         hidden = self.context_free_pred(C)
         cfPredict = hidden.matmul(protos.t())
 
+        # 2范数
         cfCos = cfPredict / (hidden.norm(dim=-1, keepdim=True) + 0.0009)
 
         out_res_cf[:steps, :, :] = torch.cat(

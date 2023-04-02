@@ -50,6 +50,7 @@ class neko_prototype_core_basic(nn.Module):
         # However, for Rocm devices it bites as it compiles kernel
         # everytime we change batch size it's nightmare.
         self.dev_ind = torch.nn.Parameter(torch.rand([1]))
+        # meta: /ctwch/ctwfsl5_train/dict.pt
         list_character = list(meta["chars"])
         self.aligned_characters = meta["achars"]
         # characters without shape is generally what you do now want to sample.
@@ -150,11 +151,13 @@ class neko_prototype_core_basic(nn.Module):
     def get_protos(self, sppids, normpids):
         normprotos = [self.norm_protos[i - self.sp_cnt] for i in normpids]
         spprotos = [self.sp_protos[i].unsqueeze(0) for i in sppids]
+        # E: T->P
         normprotos = self.proto_engine(torch.cat(normprotos).repeat(1, 3, 1, 1).to(self.dev_ind.device))
         allproto = torch.cat(spprotos + [normprotos])
         if self.drop:
             allproto = self.drop(allproto)
 
+        # return Pj
         return allproto / torch.norm(allproto, dim=-1, keepdim=True)
 
     def get_plabel_and_dict(self, sappids, normpids):

@@ -34,6 +34,7 @@ class PositionalEncoding(nn.Module):
         )
 
     def sampleTrain(self, label):
+        # entrance:make proto
         return self.dwcore.sample_charset_by_text(label)
 
     def encode(self, proto, pLabel, tdict, batch):
@@ -54,17 +55,17 @@ class PositionalEncoding(nn.Module):
         return self.dwcore.dump_all()
 
     @staticmethod
-    def decode(outNet, length, protos, labels, tdict, thresh=None):
+    def decode(netOUT, length, protos, labels, tdict, thresh=None):
         outDecode = []
         outProbability = []
-        outNet = nn.functional.softmax(outNet, dim=1)
+        netOUT = nn.functional.softmax(netOUT, dim=1)
         for i in range(0, length.shape[0]):
-            curIndexList = outNet[
+            curIndexList = netOUT[
                            int(length[:i].sum()): int(length[:i].sum() + length[i])
                            ].topk(1)[1][:, 0].tolist()
 
             curText = ''.join([tdict[_] if 0 < _ <= len(tdict) else '' for _ in curIndexList])
-            curProbability = outNet[int(length[:i].sum()): int(length[:i].sum() + length[i])].topk(1)[0][:, 0]
+            curProbability = netOUT[int(length[:i].sum()): int(length[:i].sum() + length[i])].topk(1)[0][:, 0]
             curProbability = torch.exp(torch.log(curProbability).sum() / curProbability.size()[0])
             if thresh is not None:
                 filteredText = []
