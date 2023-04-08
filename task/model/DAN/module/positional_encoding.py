@@ -23,6 +23,7 @@ class PositionalEncoding(nn.Module):
             self.numChannel,
             meta,
             backbone,
+            # none backbone
             None,
             {
                 "master_share": not self.caseSensitive,
@@ -49,6 +50,7 @@ class PositionalEncoding(nn.Module):
             curEncoded = torch.tensor([tdict[char] if char in tdict else tdict["[UNK]"]
                                        for char in regex.findall(r'\X', batch[i], regex.U)])
             out[i][0:len(curEncoded)] = curEncoded
+        # TODO encode的前后对比
         return out
 
     def dumpAll(self):
@@ -59,6 +61,7 @@ class PositionalEncoding(nn.Module):
         outDecode = []
         outProbability = []
         netOUT = nn.functional.softmax(netOUT, dim=1)
+        # TODO netOUT的内容
         for i in range(0, length.shape[0]):
             curIndexList = netOUT[
                            int(length[:i].sum()): int(length[:i].sum() + length[i])

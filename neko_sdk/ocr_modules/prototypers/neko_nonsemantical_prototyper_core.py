@@ -113,6 +113,8 @@ class neko_nonsematical_prototype_core_basic(neko_prototype_core_basic):
                 new_id += 1
                 # sembs.append(this.semantic_embedding[vlab]);
             alab = labmap[vlab]
+            # vlab :cha的 id,如果 masters_share为真,则访问masters[i]
+            # alab :vlab的 hash id
             plabels.append(alab)
             bidict[alab] = cha
             bidict[cha] = alab

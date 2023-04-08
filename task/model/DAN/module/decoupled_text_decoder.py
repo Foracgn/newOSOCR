@@ -3,6 +3,7 @@ import torch
 from neko_sdk.ocr_modules.neko_score_merging import scatter_cvt
 
 
+# TODO 对比现有DAN网络的DTD模块
 class DecoupledTextDecoder(nn.Module):
 
     def __init__(self, numChannel, dropout=0.3, xTrapParam=None):
@@ -67,7 +68,6 @@ class DecoupledTextDecoder(nn.Module):
         return output, outLength
 
     def loop(self, C, protos, semblance, labels, steps, nB, hype):
-        # TODO
         out_res_cf = torch.zeros(steps, nB, protos.shape[0] + 1).type_as(C.data) + self.UNK_SCR
         sim_score = torch.zeros(steps, nB, protos.shape[0] + 1).type_as(C.data) + self.UNK_SCR
 

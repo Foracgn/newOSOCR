@@ -137,16 +137,20 @@ class RejectAccuracyCounter:
             else:
                 self.totalK += 1
                 self.Kcorr += cflag
-                # TODO KtU添加确认
+                # 推测:为本能识别但识别为unknown的字符
                 self.KtU += (predict[i].find("⑨") != -1)
 
     def show(self):
         print(self.displayString)
         if self.totalSamples == 0:
             pass
+        # if 为 无用分支
         R = self.Ucorr / self.totalU
+        # 正确识别的unknown字符
         P = self.Ucorr / (self.Ucorr + self.KtU)
+        # 识别为unknown字符的正确率
         F = 2 * (R * P) / (R + P)
+        # K accuracy: 正确识别的known识别率
         print("KACR: {:.6f},URCL:{:.6f}, UPRE {:.6f}, F {:.6f}".format(
             self.Kcorr / self.totalK,
             R, P, F

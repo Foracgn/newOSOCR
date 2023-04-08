@@ -24,7 +24,6 @@ def getDatasetConfig(maxT, root, dictPath):
     }
 
 
-# Todo:dataset train
 def getCompareDatasetConfig(trainRoot, trainDict, testRoot, testDict, maxT=25):
     return {
         'datasetTrain': LmdbDatasetTrain,

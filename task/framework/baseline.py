@@ -102,11 +102,12 @@ class BaselineDAN:
 
         if testMeta is None:
             proto, semblance, pLabel, testDict = self.model[3].dumpAll()
+            # model[3].dumpAll == model[3].dwcore.dump_all()
+            # 目前无用分支
         else:
             testCore = neko_prototype_core_basic_shared(testMeta, self.model[3].dwcore)
             testCore.cuda()
             proto, pLabel, testDict = testCore.dump_all()
-            # TODO: tdict
             semblance = None
 
         counter = 0
@@ -132,22 +133,25 @@ class BaselineDAN:
             output, outLength, one = self.model[2](features[-1], proto, semblance, pLabel, one, None, labelLength, True)
             charOutput, predictProb = self.model[3].decode(output, outLength, proto, pLabel, testDict)
 
-            repCharOutput = [[i] for i in charOutput]
+            # repCharOutput = [[i] for i in charOutput]
             # reject
             if reject:
-                unknownLabel = []
+                allSetLabel = []
                 for oneLabel in label:
-                    unknownLabel.append("".join([c if c in testDict else "⑨" for c in oneLabel]))
-                prefixSet = [b[0] for b in repCharOutput]
-                tools[0].addIter(prefixSet, outLength, unknownLabel, debug)
+                    allSetLabel.append("".join([c if c in testDict else "⑨" for c in oneLabel]))
+                # predictSet = [b[0] for b in repCharOutput]
+                # predictSet == charOutput
+                # tools[0].addIter(predictSet, outLength, allSetLabel, debug)
+                tools[0].addIter(charOutput, outLength, allSetLabel, debug)
             else:
                 tools[0].addIter(charOutput, outLength, label, debug)
             if datasetPath:
                 features, grid = self.model[0](image, True)
                 if len(grid) > 0:
                     resData = vis_lenses(image, grid)[1]
+                    predictList = [[i] for i in charOutput]
                     if visualizer is not None:
-                        visualizer.addImage([image, resData], label, repCharOutput, charOutput, ["before", "after"])
+                        visualizer.addImage([image, resData], label, predictList, charOutput, ["before", "after"])
         tools[0].show()
         print(all)
         net.TrainOrEval(self.model, 'Train')
@@ -186,8 +190,8 @@ class BaselineDAN:
                 )
 
     def fpbp(self, image, label, cased=None):  # Forward Propagation And Backward Propagation
+        # make proto -> core.sample_charset_by_text
         proto, semblance, pLabel, tdict = self.makeProto(label)
-        # TODO check target
         target = self.model[3].encode(proto, pLabel, tdict, label)
         labelFlatten, length = net.FlattenLabel(target)
         target = target.cuda()
