@@ -121,7 +121,7 @@ class BaselineDAN:
             counter += 1
             image = batch['image']
             label = batch['label']
-            target = self.model[3].encode(proto, pLabel, testDict, label)
+            target = self.model[3].encode(testDict, label)
 
             allLength += image.shape[0]
             image = image.cuda()
@@ -131,7 +131,7 @@ class BaselineDAN:
             features = self.model[0](image)
             one = self.model[1](features)
             output, outLength, one = self.model[2](features[-1], proto, semblance, pLabel, one, None, labelLength, True)
-            charOutput, predictProb = self.model[3].decode(output, outLength, proto, pLabel, testDict)
+            charOutput, predictProb = self.model[3].decode(output, outLength, testDict)
 
             # repCharOutput = [[i] for i in charOutput]
             # reject
@@ -192,7 +192,7 @@ class BaselineDAN:
     def fpbp(self, image, label, cased=None):  # Forward Propagation And Backward Propagation
         # make proto -> core.sample_charset_by_text
         proto, semblance, pLabel, tdict = self.makeProto(label)
-        target = self.model[3].encode(proto, pLabel, tdict, label)
+        target = self.model[3].encode(tdict, label)
         labelFlatten, length = net.FlattenLabel(target)
         target = target.cuda()
         labelFlatten = labelFlatten.cuda()
@@ -207,7 +207,7 @@ class BaselineDAN:
 
         outCls, outSim = self.model[2](features[-1], proto, semblance, pLabel, one, target, length)
         # out, attention
-        charOutput, predictProb = self.model[3].decode(outCls, length, proto, pLabel, tdict)
+        charOutput, predictProb = self.model[3].decode(outCls, length, tdict)
 
         # 训练中预测结果
         self.trainAccuracy.addIter(charOutput, length, labels)

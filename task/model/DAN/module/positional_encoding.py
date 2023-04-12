@@ -38,7 +38,7 @@ class PositionalEncoding(nn.Module):
         # entrance:make proto
         return self.dwcore.sample_charset_by_text(label)
 
-    def encode(self, proto, pLabel, tdict, batch):
+    def encode(self, tdict, batch):
         if not self.caseSensitive:
             batch = [ch.lower() for ch in batch]
         return self.encodeNaive(tdict, batch)
@@ -57,7 +57,7 @@ class PositionalEncoding(nn.Module):
         return self.dwcore.dump_all()
 
     @staticmethod
-    def decode(netOUT, length, protos, labels, tdict, thresh=None):
+    def decode(netOUT, length, tdict, thresh=None):
         outDecode = []
         outProbability = []
         netOUT = nn.functional.softmax(netOUT, dim=1)
