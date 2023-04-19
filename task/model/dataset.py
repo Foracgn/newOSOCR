@@ -50,10 +50,12 @@ class LmdbDataset(Dataset):
                 return i
 
     def __getitem__(self, index):
+        cv2.setNumThreads(0)
         fromWhich = self.__fromWhich__()
         if self.globalState == 'Train':
             index = random.randint(0, self.maxLen - 1)
         index = index % self.lengths[fromWhich]
+        index += 1
         with self.envs[fromWhich].begin(write=False) as res:
             imgKey = 'image-%09d' % index
             try:
