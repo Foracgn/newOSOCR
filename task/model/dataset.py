@@ -207,10 +207,13 @@ class ColoredLmdbDataset(LmdbDataset):
         maskW = self.imgW
         img = np.array(img)
 
-        if self.qhbAUG:
-            img = qhbwarp(img, 10)
         if len(img.shape) == 2:
             img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        if self.qhbAUG:
+            try:
+                img = qhbwarp(img, 10)
+            except:
+                pass
         if curRatio > self.targetRatio:
             curTargetH = self.imgH
             curTargetW = self.imgW
