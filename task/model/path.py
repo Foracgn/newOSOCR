@@ -7,6 +7,7 @@ class Path:
         self.modelPath = []
         self.trainRoot = []
         self.trainDict = []
+        self.multiTrain = dict()
         # 初始化
         data = open(constPath, 'r').read()
         setConfigs = yaml.load(data, Loader=yaml.FullLoader)
@@ -32,3 +33,6 @@ class Path:
         for i in range(0, 4):
             self.trainRoot.append(self.datasetRoot + setConfigs['train']['root'+str(i)])
             self.trainDict.append(self.datasetRoot + setConfigs['train']['dict'+str(i)])
+
+        for i, root in enumerate(setConfigs['multi_train']):
+            self.multiTrain[root] = self.datasetRoot + root

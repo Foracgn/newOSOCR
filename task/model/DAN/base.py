@@ -22,3 +22,20 @@ class DanConfig:
         self.optimizerConfigs = optimizer.getOpt()
         self.savingConfigs = train.getSaveCfg(pathSet.modelPath[num])
         self.lossWeight = loss.cls_emb[1]
+
+
+class ColoredDanConfig:
+    def __init__(self, pathSet, mode="Train"):
+        self.datasetConfigs = dataset.getColoredDataset(
+            [pathSet.multiTrain['nips14'], pathSet.multiTrain['cvpr16']],
+            [pathSet.multiTrain['iiit5k']]
+        )
+
+        if mode == "Train":
+            self.globalConfigs = train.getTrainCfg()
+        else:
+            self.globalConfigs = train.getTestCfg()
+
+        self.optimizerConfigs = optimizer.getOpt()
+        self.savingConfigs = train.getSaveCfg(pathSet.modelPath[num])
+        self.lossWeight = loss.cls_emb[1]

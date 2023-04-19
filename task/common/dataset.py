@@ -63,11 +63,11 @@ def getCompareDatasetConfig(trainRoot, trainDict, testRoot, testDict, maxT=25):
     }
 
 
-def getColoredDataset(maxT=25):
+def getColoredDataset(trainRoot, testRoot, maxT=25):
     return {
         'datasetTrain': ColoredLmdbDataset,
         'datasetTrainConfigs': {
-            'roots': [],
+            'roots': trainRoot,
             'imgH': 32,
             'imgW': 128,
             'transform': transforms.Compose([transforms.ToTensor()]),
@@ -81,7 +81,7 @@ def getColoredDataset(maxT=25):
             'num_workers': 3,
         },
         'datasetTestConfigs': {
-            'roots': [],
+            'roots': testRoot,
             'imgH': 32,
             'imgW': 128,
             'transform': transforms.Compose([transforms.ToTensor()]),

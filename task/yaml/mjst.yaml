@@ -1,5 +1,5 @@
 
-modelRoot: ./prfinal/hwdb
+modelRoot: ./prfinal/mjst
 
 basic:
   FE0: /basic_mjst_CE_alter_500_E9_M0.pth
@@ -37,3 +37,9 @@ test_rej:
 train:
   root: /dict
   dict: /dict/dab62cased.pt
+
+
+multi_train:
+  nips14: /nips14
+  cvpr16: /CVPR2016
+  iiit5k: /IIIT5k_3000
