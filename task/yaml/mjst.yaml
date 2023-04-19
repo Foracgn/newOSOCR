@@ -40,6 +40,6 @@ train:
 
 
 multi_train:
-  nips14: /nips14
+  nips14: /NIPS2014
   cvpr16: /CVPR2016
   iiit5k: /IIIT5k_3000

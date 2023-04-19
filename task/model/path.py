@@ -35,4 +35,4 @@ class Path:
             self.trainDict.append(self.datasetRoot + setConfigs['train']['dict'+str(i)])
 
         for i, root in enumerate(setConfigs['multi_train']):
-            self.multiTrain[root] = self.datasetRoot + root
+            self.multiTrain[root] = self.datasetRoot + setConfigs['multi_train'][root]

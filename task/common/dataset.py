@@ -80,6 +80,7 @@ def getColoredDataset(trainRoot, testRoot, maxT=25):
             'shuffle': True,
             'num_workers': 3,
         },
+        'datasetTest': ColoredLmdbDataset,
         'datasetTestConfigs': {
             'roots': testRoot,
             'imgH': 32,
@@ -89,7 +90,7 @@ def getColoredDataset(trainRoot, testRoot, maxT=25):
             'maxT': maxT,
             'qhbAUG': True
         },
-        'dataloader_test': {
+        'dataloaderTest': {
             'batch_size': 48,
             'shuffle': True,
             'num_workers': 3,
