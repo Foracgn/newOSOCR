@@ -65,7 +65,7 @@ def getCompareDatasetConfig(trainRoot, trainDict, testRoot, testDict, maxT=25):
 
 def getColoredDataset(trainRoot, testRoot, maxT=25):
     return {
-        'datasetTrain': ColoredLmdbDataset,
+        'datasetTrain': LmdbDataset,
         'datasetTrainConfigs': {
             'roots': trainRoot,
             'imgH': 32,
@@ -81,7 +81,7 @@ def getColoredDataset(trainRoot, testRoot, maxT=25):
             'num_workers': 3,
         },
         'trainCaseSensitive': False,
-        'datasetTest': ColoredLmdbDataset,
+        'datasetTest': LmdbDataset,
         'datasetTestConfigs': {
             'roots': testRoot,
             'imgH': 32,
