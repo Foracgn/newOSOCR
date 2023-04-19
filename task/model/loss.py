@@ -150,7 +150,7 @@ class RejectAccuracyCounter:
         P = self.Ucorr / (self.Ucorr + self.KtU)
         # 识别为unknown字符的正确率
         F = 2 * (R * P) / (R + P)
-        # K accuracy: 正确识别的known识别率
+        # 2/(1/R+1/P)
         print("KACR: {:.6f},URCL:{:.6f}, UPRE {:.6f}, F {:.6f}".format(
             self.Kcorr / self.totalK,
             R, P, F

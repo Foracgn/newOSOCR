@@ -34,42 +34,33 @@ class DecoupledTextDecoder(nn.Module):
         self.register_parameter("UNK_SCR", self.UNK_SCR)
         self.register_parameter("ALPHA", self.ALPHA)
 
-    def sample(self, feature, A):
+    def forward(self, feature, protos, labels, A, hype, textLength, test=False):
         nB, nC, nH, nW = feature.size()
         nT = A.size()[1]
-        # Normalize
-        A = A / A.view(nB, nT, -1).sum(2).view(nB, nT, 1, 1)
-        # weighted sum
-        C = self.getC(feature, A, nB, nC, nH, nW, nT)
-        return A, C
-
-    def forward(self, feature, protos, semblance, labels, A, hype, textLength, test=False):
-        nB, nC, nH, nW = feature.size()
-        nT = A.size()[1]
-        A, C = self.sample(feature, A)
+        A, C = self.sample(feature, A, nB, nC, nH, nW, nT)
         C = nn.functional.dropout(C, p=0.3, training=self.training)
         if not test:
-            return self.forwardTrain(protos, semblance, labels, nB, C, nT, textLength, A, nW, nH)
+            return self.forwardTrain(protos, labels, nB, C, nT, textLength, A, nW, nH)
         else:
-            out, outL = self.forwardTest(protos, semblance, labels, nB, C, nT)
+            out, outL = self.forwardTest(protos, labels, nB, C, nT)
             return out, outL, A
 
-    def forwardTrain(self, protos, semblance, labels, nB, C, nT, textLength, A, nW, nH, hype=None):
+    def forwardTrain(self, protos, labels, nB, C, nT, textLength, A, nW, nH, hype=None):
         steps = int(textLength.max())
-        outCls, outSim = self.loop(C, protos, semblance, labels, steps, nB, hype)
-        outCls = self.predict(outCls, labels, textLength, nB, nT)
-        outSim = self.predict(outSim, labels, textLength, nB, nT)
-        return outCls, outSim
+        outRes, _ = self.loop(C, protos, steps, nB, hype)
+        outRes = self.predict(outRes, labels, textLength, nB, nT)
+        # _ = self.predict(_, labels, textLength, nB, nT)
+        return outRes, _
 
-    def forwardTest(self, protos, semblance, labels, nB, C, nT):
-        outCls, _ = self.loop(C, protos, semblance, labels, nT, nB, None)
-        outLength = self.prob_length(outCls, nT, nB)
-        output = self.predict(outCls, labels, outLength, nB, nT)
+    def forwardTest(self, protos, labels, nB, C, nT):
+        outRes, _ = self.loop(C, protos, nT, nB, None)
+        outLength = self.prob_length(outRes, nT, nB)
+        output = self.predict(outRes, labels, outLength, nB, nT)
         return output, outLength
 
-    def loop(self, C, protos, semblance, labels, steps, nB, hype):
-        out_res_cf = torch.zeros(steps, nB, protos.shape[0] + 1).type_as(C.data) + self.UNK_SCR
-        sim_score = torch.zeros(steps, nB, protos.shape[0] + 1).type_as(C.data) + self.UNK_SCR
+    def loop(self, C, protos, steps, nB, hype):
+        outRes = torch.zeros(steps, nB, protos.shape[0] + 1).type_as(C.data) + self.UNK_SCR
+        attentionMap = torch.zeros(steps, nB, protos.shape[0] + 1).type_as(C.data) + self.UNK_SCR
 
         # context_free_predict:torch.nn.Linear(self.numChannel, self.numChannel)
         hidden = self.context_free_pred(C)
@@ -78,16 +69,16 @@ class DecoupledTextDecoder(nn.Module):
         # 2范数
         cfCos = cfPredict / (hidden.norm(dim=-1, keepdim=True) + 0.0009)
 
-        out_res_cf[:steps, :, :] = torch.cat(
+        outRes[:steps, :, :] = torch.cat(
             [
                 cfPredict[:steps, :, :] * self.ALPHA,
                 self.UNK_SCR.repeat(steps, nB, 1)
             ],
             dim=-1
         )
-        sim_score[:steps, :, :-1] = cfCos[:steps, :, :]
+        attentionMap[:steps, :, :-1] = cfCos[:steps, :, :]
 
-        return out_res_cf, sim_score
+        return outRes, attentionMap
 
     @staticmethod
     def normedInit(numChannel):
@@ -95,10 +86,13 @@ class DecoupledTextDecoder(nn.Module):
         return data / torch.norm(data, dim=-1, keepdim=True)
 
     @staticmethod
-    def getC(feature, A, nB, nC, nH, nW, nT):
+    def sample(feature, A, nB, nC, nH, nW, nT):
+        # Normalize
+        A = A / A.view(nB, nT, -1).sum(2).view(nB, nT, 1, 1)
+        # weighted sum
         C = feature.view(nB, 1, nC, nH, nW) * A.view(nB, nT, 1, nH, nW)
         C = C.view(nB, nT, nC, -1).sum(3).transpose(1, 0)
-        return C
+        return A, C
 
     @staticmethod
     def predict(res, label, outLength, nB, nT):

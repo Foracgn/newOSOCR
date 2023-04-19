@@ -1,6 +1,6 @@
 import task.model.dataset
 from torchvision import transforms
-from task.model.dataset import LmdbDataset, LmdbDatasetTrain
+from task.model.dataset import LmdbDataset, LmdbDatasetTrain, ColoredLmdbDataset
 
 
 def getDatasetConfig(maxT, root, dictPath):
@@ -60,4 +60,38 @@ def getCompareDatasetConfig(trainRoot, trainDict, testRoot, testDict, maxT=25):
         'testCaseSensitive': False,
         'testMeta': testDict,
         'caseSensitive': False,
+    }
+
+
+def getColoredDataset(maxT=25):
+    return {
+        'datasetTrain': ColoredLmdbDataset,
+        'datasetTrainConfigs': {
+            'roots': [],
+            'imgH': 32,
+            'imgW': 128,
+            'transform': transforms.Compose([transforms.ToTensor()]),
+            'globalState': 'Train',
+            'maxT': maxT,
+            'qhbAUG': True
+        },
+        'dataloaderTrain': {
+            'batch_size': 48,
+            'shuffle': True,
+            'num_workers': 3,
+        },
+        'datasetTestConfigs': {
+            'roots': [],
+            'imgH': 32,
+            'imgW': 128,
+            'transform': transforms.Compose([transforms.ToTensor()]),
+            'globalState': 'Test',
+            'maxT': maxT,
+            'qhbAUG': True
+        },
+        'dataloader_test': {
+            'batch_size': 48,
+            'shuffle': True,
+            'num_workers': 3,
+        },
     }

@@ -125,12 +125,12 @@ class BaselineDAN:
 
             allLength += image.shape[0]
             image = image.cuda()
-            target = target
+            target = target.cuda()
             labelFlatten, labelLength = tools[1](target)
 
             features = self.model[0](image)
             one = self.model[1](features)
-            output, outLength, one = self.model[2](features[-1], proto, semblance, pLabel, one, None, labelLength, True)
+            output, outLength, one = self.model[2](features[-1], proto, pLabel, one, None, labelLength, True)
             charOutput, predictProb = self.model[3].decode(output, outLength, testDict)
 
             # repCharOutput = [[i] for i in charOutput]
@@ -139,9 +139,6 @@ class BaselineDAN:
                 allSetLabel = []
                 for oneLabel in label:
                     allSetLabel.append("".join([c if c in testDict else "⑨" for c in oneLabel]))
-                # predictSet = [b[0] for b in repCharOutput]
-                # predictSet == charOutput
-                # tools[0].addIter(predictSet, outLength, allSetLabel, debug)
                 tools[0].addIter(charOutput, outLength, allSetLabel, debug)
             else:
                 tools[0].addIter(charOutput, outLength, label, debug)
@@ -191,13 +188,13 @@ class BaselineDAN:
 
     def fpbp(self, image, label, cased=None):  # Forward Propagation And Backward Propagation
         # make proto -> core.sample_charset_by_text
-        proto, semblance, pLabel, tdict = self.makeProto(label)
+        proto, _, pLabel, tdict = self.makeProto(label)
         target = self.model[3].encode(tdict, label)
         labelFlatten, length = net.FlattenLabel(target)
         target = target.cuda()
         labelFlatten = labelFlatten.cuda()
-        labels = ["".join([tdict[i.item()] for i in target[j]]).replace('[s]', "") for j in
-                  range(len(target))]
+        targetLabels = ["".join([tdict[i.item()] for i in target[j]]).replace('[s]', "") for j in
+                        range(len(target))]
 
         net.TrainOrEval(self.model, 'Train')
         image = image.cuda()
@@ -205,18 +202,18 @@ class BaselineDAN:
         features = self.model[0](image)
         one = self.model[1](features)
 
-        outCls, outSim = self.model[2](features[-1], proto, semblance, pLabel, one, target, length)
+        outCls, _ = self.model[2](features[-1], proto, pLabel, one, target, length)
         # out, attention
-        charOutput, predictProb = self.model[3].decode(outCls, length, tdict)
 
+        charOutput, predictProb = self.model[3].decode(outCls, length, tdict)
         # 训练中预测结果
-        self.trainAccuracy.addIter(charOutput, length, labels)
+        self.trainAccuracy.addIter(charOutput, length, targetLabels)
 
         protoLoss = nn.functional.relu(proto[1:].matmul(proto[1:].T) - 0.14).mean()
         res = torch.ones_like(torch.ones(outCls.shape[-1])).to(proto.device).float()
         res[-1] = 0.1
         CLSLoss = nn.functional.cross_entropy(outCls, labelFlatten, res)
-        SimLoss = self.cosLoss(outSim, labelFlatten)
+        SimLoss = self.cosLoss(_, labelFlatten)
         marginLoss = self.url.forward(outCls, labelFlatten, 0.5)
         # unknown ranking loss
         oneLoss = SimLoss * self.wsim + CLSLoss * self.wcls + marginLoss * self.wmar + self.wemb * protoLoss

@@ -1,0 +1,39 @@
+
+modelRoot: ./prfinal/hwdb
+
+basic:
+  FE0: /basic_mjst_CE_alter_500_E9_M0.pth
+  CAM0: /basic_mjst_CE_alter_500_E9_M1.pth
+  DTD0: /basic_mjst_CE_alter_500_E9_M2.pth
+  PE0: /basic_mjst_CE_alter_500_E9_M3.pth
+  FE1: /basic_mjst_CE_alter_1000_E9_M0.pth
+  CAM1: /basic_mjst_CE_alter_1000_E9_M1.pth
+  DTD1: /basic_mjst_CE_alter_1000_E9_M2.pth
+  PE1: /basic_mjst_CE_alter_1000_E9_M3.pth
+  FE2: /basic_mjst_CE_alter_1500_E9_M0.pth
+  CAM2: /basic_mjst_CE_alter_1500_E9_M1.pth
+  DTD2: /basic_mjst_CE_alter_1500_E9_M2.pth
+  PE2: /basic_mjst_CE_alter_1500_E9_M3.pth
+  FE3: /basic_mjst_CE_alter_2000_E9_M0.pth
+  CAM3: /basic_mjst_CE_alter_2000_E9_M1.pth
+  DTD3: /basic_mjst_CE_alter_2000_E9_M2.pth
+  PE3: /basic_mjst_CE_alter_2000_E9_M3.pth
+
+datasetRoot: ./packs
+
+test:
+  root: /dict
+  dict: /dict/dab62cased.pt
+
+test_rej:
+  root: /dict
+  dict50: /hwdb/pami_ch_fsl_hwdb/cuwu_evalhwdbfsl_10_1/dictrej.pt
+  dict100: /hwdb/pami_ch_fsl_hwdb/cuwu_evalhwdbfsl_10_1/dictrej100.pt
+  dict150: /hwdb/pami_ch_fsl_hwdb/cuwu_evalhwdbfsl_10_1/dictrej200.pt
+  dict200: /hwdb/pami_ch_fsl_hwdb/cuwu_evalhwdbfsl_10_1/dictrej400.pt
+  dict250: /hwdb/pami_ch_fsl_hwdb/cuwu_evalhwdbfsl_10_1/dictrej500.pt
+
+
+train:
+  root: /dict
+  dict: /dict/dab62cased.pt

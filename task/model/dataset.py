@@ -196,3 +196,34 @@ class LmdbDatasetTrain(LmdbDataset):
         for ch in sample["label"]:
             self.chCounter[ch] += 1
         return sample
+
+
+class ColoredLmdbDataset(LmdbDataset):
+
+    def keepRatioResize(self, img):
+        curRatio = img.size[0]/float(img.size[1])
+
+        maskH = self.imgH
+        maskW = self.imgW
+        img = np.array(img)
+
+        if self.qhbAUG:
+            img = qhbwarp(img, 10)
+        if len(img.shape) == 2:
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        if curRatio > self.targetRatio:
+            curTargetH = self.imgH
+            curTargetW = self.imgW
+        else:
+            curTargetH = self.imgH
+            curTargetW = int(self.imgH * curRatio)
+        img = cv2.resize(img, (curTargetW, curTargetH))
+        startX = int((maskH - img.shape[0]) / 2)
+        startY = int((maskW - img.shape[1]) / 2)
+        mask = np.zeros([maskH, maskW, 3]).astype(np.uint8)
+        mask[startX:startX + img.shape[0], startY:startY + img.shape[1]] = img
+        bMask = np.zeros([maskH, maskW]).astype(np.float)
+        bMask[startX:startX + img.shape[0], startY:startY + img.shape[1]] = 1
+
+        img = mask
+        return img, bMask
