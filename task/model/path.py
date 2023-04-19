@@ -30,7 +30,7 @@ class Path:
             self.testRoot = self.datasetRoot + setConfigs['test_rej']['root']
             self.testDict = self.datasetRoot + setConfigs['test_rej'][rejDict]
 
-        for i in range(0, len(setConfigs['train'])):
+        for i in range(0, int(len(setConfigs['train'])/2)):
             self.trainRoot.append(self.datasetRoot + setConfigs['train']['root'+str(i)])
             self.trainDict.append(self.datasetRoot + setConfigs['train']['dict'+str(i)])
 

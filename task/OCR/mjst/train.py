@@ -5,10 +5,10 @@ from task.framework import baseline
 
 pathSet = path.Path("./task/yaml/mjst.yaml", "basic")
 DICT = {
-    "task0": base.DanConfig,
-    "task1": base.DanConfig,
-    "task2": base.DanConfig,
-    "task3": base.DanConfig
+    "task0": base.ColoredDanConfig,
+    "task1": base.ColoredDanConfig,
+    "task2": base.ColoredDanConfig,
+    "task3": base.ColoredDanConfig
 }
 
 if __name__ == '__main__':

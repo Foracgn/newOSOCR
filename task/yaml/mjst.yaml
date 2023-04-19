@@ -22,11 +22,11 @@ basic:
 datasetRoot: ./packs
 
 test:
-  root: /dict
-  dict: /dict/dab62cased.pt
+  root: /dicts
+  dict: /dicts/dab62cased.pt
 
 test_rej:
-  root: /dict
+  root: /dicts
   dict50: /hwdb/pami_ch_fsl_hwdb/cuwu_evalhwdbfsl_10_1/dictrej.pt
   dict100: /hwdb/pami_ch_fsl_hwdb/cuwu_evalhwdbfsl_10_1/dictrej100.pt
   dict150: /hwdb/pami_ch_fsl_hwdb/cuwu_evalhwdbfsl_10_1/dictrej200.pt
@@ -35,8 +35,8 @@ test_rej:
 
 
 train:
-  root: /dict
-  dict: /dict/dab62cased.pt
+  root0: /dicts
+  dict0: /dicts/dab62cased.pt
 
 
 multi_train:
