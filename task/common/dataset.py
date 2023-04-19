@@ -80,6 +80,7 @@ def getColoredDataset(trainRoot, testRoot, maxT=25):
             'shuffle': True,
             'num_workers': 3,
         },
+        'trainCaseSensitive': False,
         'datasetTest': ColoredLmdbDataset,
         'datasetTestConfigs': {
             'roots': testRoot,
@@ -95,4 +96,5 @@ def getColoredDataset(trainRoot, testRoot, maxT=25):
             'shuffle': True,
             'num_workers': 3,
         },
+        'testCaseSensitive': False,
     }
