@@ -36,6 +36,7 @@ class ColoredDanConfig:
         else:
             self.globalConfigs = train.getTestCfg()
 
+        self.netConfigs = net.getNetConfig(pathSet.trainDict[0], pathSet.modelPath[num], T, mode=mode)
         self.optimizerConfigs = optimizer.getOpt()
         self.savingConfigs = train.getSaveCfg(pathSet.modelPath[num])
         self.lossWeight = loss.cls_emb[1]
