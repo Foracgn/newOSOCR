@@ -21,11 +21,8 @@ class DanConfig:
 
 
 class ColoredDanConfig:
-    def __init__(self, pathSet, num, mode="Train"):
-        self.datasetConfigs = dataset.getColoredDataset(
-            [pathSet.multiTrain['nips14'], pathSet.multiTrain['cvpr16']],
-            [pathSet.multiTrain['iiit5k']]
-        )
+    def __init__(self, pathSet, num, trainRoot, testRoot, mode="Train"):
+        self.datasetConfigs = dataset.getColoredDataset(trainRoot, testRoot)
 
         if mode == "Train":
             self.globalConfigs = train.getTrainCfg()

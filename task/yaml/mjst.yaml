@@ -39,6 +39,13 @@ train:
   dict0: /dicts/dab62cased.pt
 
 
+multi_test:
+  CUTE: /CUTE80
+  SVT: /SVT
+  IC03_867: /IC03_867
+  IC13_1015: /IC13_1015
+
+
 multi_train:
   nips14: /NIPS2014
   cvpr16: /CVPR2016
