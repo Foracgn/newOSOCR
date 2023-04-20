@@ -3,19 +3,19 @@ from task.model.DAN import base
 from task.model import path
 from task.framework import baseline
 
-pathSet = path.Path("./task/yaml/mjst.yaml", "basic", "test")
 DICT = {
-    "CUTE": base.FreeDictDanConfig,
-    "SVT": base.FreeDictDanConfig,
-    "IC03_867": base.FreeDictDanConfig,
-    "IC13_1015": base.FreeDictDanConfig
+    "dabjpmltch_osr": base.FreeDictDanConfig,
+    "dabjpmltch_sharedkanji": base.FreeDictDanConfig,
+    "dabjpmltch_nohirakata": base.FreeDictDanConfig,
+    "dabjpmltch_kanji": base.FreeDictDanConfig
 }
 
 if __name__ == '__main__':
     for i, k in enumerate(DICT):
+        pathSet = path.Path("./task/yaml/ostr.yaml", "basic", "rej", "dict"+str(i))
         cfgs = DICT[k](
             pathSet.modelPath[0],
-            pathSet.trainDict[0],
+            pathSet.testDict,
             [pathSet.multiTest[k]],
             [pathSet.multiTest[k]],
             mode="Test"

@@ -20,8 +20,8 @@ class DanConfig:
         self.lossWeight = loss.cls_emb[1]
 
 
-class ColoredDanConfig:
-    def __init__(self, pathSet, num, trainRoot, testRoot, mode="Train"):
+class FreeDictDanConfig:
+    def __init__(self, modelPath, protoDict, trainRoot, testRoot, mode="Train"):
         self.datasetConfigs = dataset.getColoredDataset(trainRoot, testRoot)
 
         if mode == "Train":
@@ -29,7 +29,7 @@ class ColoredDanConfig:
         else:
             self.globalConfigs = train.getTestCfg()
 
-        self.netConfigs = net.getNetConfig(pathSet.trainDict[0], pathSet.modelPath[num], maxT=25, mode=mode)
+        self.netConfigs = net.getNetConfig(protoDict, modelPath, maxT=25, mode=mode)
         self.optimizerConfigs = optimizer.getOpt()
-        self.savingConfigs = train.getSaveCfg(pathSet.modelPath[num])
+        self.savingConfigs = train.getSaveCfg(modelPath)
         self.lossWeight = loss.cls_emb[1]

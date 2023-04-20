@@ -1,0 +1,57 @@
+
+modelRoot: ./prfinal/mjst
+
+basic:
+  FE0: /basic_mjst_CE_alter_500_E9_M0.pth
+  CAM0: /basic_mjst_CE_alter_500_E9_M1.pth
+  DTD0: /basic_mjst_CE_alter_500_E9_M2.pth
+  PE0: /basic_mjst_CE_alter_500_E9_M3.pth
+  FE1: /basic_mjst_CE_alter_1000_E9_M0.pth
+  CAM1: /basic_mjst_CE_alter_1000_E9_M1.pth
+  DTD1: /basic_mjst_CE_alter_1000_E9_M2.pth
+  PE1: /basic_mjst_CE_alter_1000_E9_M3.pth
+  FE2: /basic_mjst_CE_alter_1500_E9_M0.pth
+  CAM2: /basic_mjst_CE_alter_1500_E9_M1.pth
+  DTD2: /basic_mjst_CE_alter_1500_E9_M2.pth
+  PE2: /basic_mjst_CE_alter_1500_E9_M3.pth
+  FE3: /basic_mjst_CE_alter_2000_E9_M0.pth
+  CAM3: /basic_mjst_CE_alter_2000_E9_M1.pth
+  DTD3: /basic_mjst_CE_alter_2000_E9_M2.pth
+  PE3: /basic_mjst_CE_alter_2000_E9_M3.pth
+
+datasetRoot: ./packs
+
+test:
+  root: /dicts
+  dict: /dicts/dab62cased.pt
+
+test_rej:
+  root: /dicts
+  dict0: /dabjpmltch_osr.pt
+  dict1: /dabjpmltch_sharedkanji.pt
+  dict2: /dabjpmltch_nohirakata.pt
+  dict3: /dabjpmltch_kanji.pt
+
+
+train:
+  root0: /dicts
+  dict0: /dicts/dab3791MC.pt
+  root1: /dicts
+  dict1: /dicts/dabjpmlt.pt
+
+
+multi_train:
+  lsvtK: /lsvtdb_seen
+  ctwK: /ctwdb_seen
+  mlt_chlatK: /mlttrchlat_seen
+  rctwK: /rctwtrdb_seen
+  artK: /artdb_seen
+  mltjp: /mlttrjp_hori
+
+
+multi_test:
+  CUTE: /CUTE80
+  SVT: /SVT
+  IC03_867: /IC03_867
+  IC13_1015: /IC13_1015
+
