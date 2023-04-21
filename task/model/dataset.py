@@ -95,7 +95,10 @@ class LmdbDataset(Dataset):
         img = np.array(img)
 
         if self.qhbAUG:
-            img = qhbwarp(img, 10)
+            try:
+                img = qhbwarp(img, 10)
+            except:
+                pass
         if len(img.shape) == 3:
             img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         if curRatio > self.targetRatio:
