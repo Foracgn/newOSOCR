@@ -143,7 +143,7 @@ class BaselineDAN:
             else:
                 tools[0].addIter(charOutput, outLength, label, debug)
             if datasetPath:
-                features, grid = self.model[0](image, True)
+                features, grid = self.model[0](image)
                 if len(grid) > 0:
                     resData = vis_lenses(image, grid)[1]
                     predictList = [[i] for i in charOutput]
