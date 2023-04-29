@@ -8,7 +8,7 @@ pathSet = path.Path("./task/yaml/ostr.yaml", "basic")
 if __name__ == '__main__':
     trainSet = []
     for _, dataset in enumerate(pathSet.multiTrain):
-        trainSet.append(dataset)
+        trainSet.append(pathSet.multiTrain[dataset])
     cfgs = base.FreeDictDanConfig(
         pathSet.modelPath[0],
         pathSet.trainDict[0],

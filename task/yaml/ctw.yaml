@@ -43,3 +43,19 @@ train:
   dict2: /ctwch/ctwfsl15_train/dict.pt
   root3: /ctwch/ctwfsl20_train/
   dict3: /ctwch/ctwfsl20_train/dict.pt
+
+multi_train:
+  lsvtK: /lsvtdb_seen
+  ctwK: /ctwdb_seen
+  mlt_chlatK: /mlttrchlat_seen
+  rctwK: /rctwtrdb_seen
+  artK: /artdb_seen
+  mltjp: /mlttrjp_hori
+
+
+multi_test:
+  CUTE: /CUTE80
+  SVT: /SVT
+  IC03_867: /IC03_867
+  IC13_1015: /IC13_1015
+  mltjp: /mlttrjp_hori

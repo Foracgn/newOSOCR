@@ -90,7 +90,7 @@ class BaselineDAN:
             tools = [self.testAccuracy, net.FlattenLabel]
             if reject:
                 tools = [self.testReject, net.FlattenLabel]
-            self.test(tools, miter=self.cfgs.globalConfigs['testMiter'], datasetPath=None, reject=reject, debug=debug)
+            self.test(tools, miter=self.cfgs.globalConfigs['testMiter'], datasetPath=datasetPath, reject=reject, debug=debug)
             self.testAccuracy.clear()
 
     def test(self, tools, miter=1000, datasetPath=None, reject=False, debug=False):

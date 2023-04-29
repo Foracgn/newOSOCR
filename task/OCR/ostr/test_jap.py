@@ -21,5 +21,5 @@ if __name__ == '__main__':
             mode="Test"
         )
         runner = baseline.BaselineDAN(cfgs)
-        runner.runTest(pathSet.modelRoot, False)
+        runner.runTest(pathSet.modelRoot, True)
         print(k, "Done")
