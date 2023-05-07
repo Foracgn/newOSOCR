@@ -21,40 +21,5 @@ basic:
 
 datasetRoot: ./packs
 
-test:
-  root: /dicts
-  dict: /dicts/dabjpmlt.pt
-
-test_rej:
-  root: /dicts
-  dict0: /dicts/dabjpmltch_osr.pt
-  dict1: /dicts/dabjpmltch_sharedkanji.pt
-  dict2: /dicts/dabjpmltch_nohirakata.pt
-  dict3: /dicts/dabjpmltch_kanji.pt
-
-
-train:
-  root0: /dicts
-  dict0: /dicts/dab3791MC.pt
-  root1: /dicts
-  dict1: /dicts/dabjpmlt.pt
-
-
-multi_train:
-  lsvtK: /lsvtdb_seen
-  ctwK: /ctwdb_seen
-  mlt_chlatK: /mlttrchlat_seen
-  rctwK: /rctwtrdb_seen
-  artK: /artdb_seen
-  mltjp: /mlttrjp_hori
-
-
-multi_test:
-  CUTE: /CUTE80
-  SVT: /SVT
-  IC03_867: /IC03_867
-  IC13_1015: /IC13_1015
-  mltjp: /mlttrjp_hori
-
 oracle_root: /oracle
 oracle_dict: /oracle/dict.pt

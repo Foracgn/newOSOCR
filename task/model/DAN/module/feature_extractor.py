@@ -11,7 +11,7 @@ class FeatureExtractor(nn.Module):
 
     def forward(self, data):
         feature, grid = self.model(data)
-        return feature
+        return feature, grid
 
     def getShape(self):
         data = torch.rand(1, self.shape[0], self.shape[1], self.shape[2])

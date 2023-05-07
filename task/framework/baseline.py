@@ -128,7 +128,7 @@ class BaselineDAN:
             target = target.cuda()
             labelFlatten, labelLength = tools[1](target)
 
-            features = self.model[0](image)
+            features, grid = self.model[0](image)
             one = self.model[1](features)
             output, outLength, one = self.model[2](features[-1], proto, pLabel, one, None, labelLength, True)
             charOutput, predictProb = self.model[3].decode(output, outLength, testDict)

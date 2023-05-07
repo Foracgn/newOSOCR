@@ -20,8 +20,8 @@ if __name__ == '__main__':
         modelPath.append(taskPath)
 
     trainDict = ""
-    testDict = setConfigs['oracle_dict']
-    testRoot = setConfigs['oracle_root']
+    testDict = setConfigs['datasetRoot']+setConfigs['oracle_dict']
+    testRoot = setConfigs['datasetRoot']+setConfigs['oracle_root']
 
     cfgs = base.FreeDictDanConfig(
             modelPath[0],
