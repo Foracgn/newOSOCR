@@ -103,11 +103,10 @@ class PositionalEncodingOracle(PositionalEncoding):
         )
 
     def encodeNaive(self, tdict, batch):
-        maxLen = max([len(s) for s in batch])
+        maxLen = 1
         out = torch.zeros(len(batch), maxLen + 1).long() + self.EOS
-        for i in range(0, len(batch)):
-            curEncoded = torch.tensor([tdict[char] if char in tdict else tdict["[UNK]"]
-                                       for char in batch[i]])
+        for i, one in enumerate(batch):
+            curEncoded = torch.tensor([tdict[one] if one in tdict else tdict["[UNK]"]])
             out[i][0:len(curEncoded)] = curEncoded
         return out
 
