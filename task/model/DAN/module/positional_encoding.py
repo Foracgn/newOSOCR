@@ -2,6 +2,7 @@ from torch import nn
 import torch
 from neko_sdk.ocr_modules.prototypers.neko_nonsemantical_prototyper_core import neko_nonsematical_prototype_core_basic
 import regex
+from task.model.proto_net import OracleProtoNet
 
 
 class PositionalEncoding(nn.Module):
@@ -83,6 +84,23 @@ class PositionalEncoding(nn.Module):
 
 
 class PositionalEncodingOracle(PositionalEncoding):
+
+    def setCore(self, backbone=None, valFrac=0.8):
+        meta = torch.load(self.metaPath)
+        self.dwcore = OracleProtoNet(
+            self.numChannel,
+            meta,
+            backbone,
+            # none backbone
+            None,
+            {
+                "master_share": not self.caseSensitive,
+                "max_batch_size": 512,
+                "val_frac": valFrac,
+                "neg_servant": True
+            },
+            dropout=0.3
+        )
 
     def encodeNaive(self, tdict, batch):
         maxLen = max([len(regex.findall(r'\X', s, regex.U)) for s in batch])
