@@ -3,16 +3,33 @@ from task.model.DAN import base
 from task.framework import baseline
 import yaml
 
-pathSet = path.Path("./task/yaml/ostr.yaml", "basic")
+constPath = "./task/yaml/oracle.yaml"
 
 if __name__ == '__main__':
+    data = open(constPath, 'r').read()
+    setConfigs = yaml.load(data, Loader=yaml.FullLoader)
+    modelRoot = setConfigs['modelRoot']
+    modelPath = []
+    taskPath = [
+        modelRoot + setConfigs['basic']['FE0'],
+        modelRoot + setConfigs['basic']['CAM0'],
+        modelRoot + setConfigs['basic']['DTD0'],
+        modelRoot + setConfigs['basic']['PE0']
+    ]
+    modelPath.append(taskPath)
+
+    oracleDict = setConfigs['datasetRoot']+setConfigs['oracle_dict']
+    oracleRoot = setConfigs['datasetRoot']+setConfigs['oracle_root']
+
     cfgs = base.OracleDanConfig(
-        pathSet.modelPath[0],
-        pathSet.trainDict[0],
-        trainSet,
-        trainSet,
-        mode="Train"
+            modelPath[0],
+            oracleDict,
+            [oracleRoot],
+            [oracleRoot],
+            mode="Train"
     )
+
     runner = baseline.BaselineDAN(cfgs)
-    runner.run(pathSet.modelRoot, False)
-    print("train task ostr Done")
+    runner.runTest(modelRoot, True)
+
+    print("oracle task done")
