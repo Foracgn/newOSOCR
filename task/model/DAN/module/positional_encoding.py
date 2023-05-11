@@ -117,11 +117,11 @@ class PositionalEncodingOracle(PositionalEncoding):
         netOUT = nn.functional.softmax(netOUT, dim=1)
         # TODO netOUT的内容
         for i in range(0, length.shape[0]):
-            curIndexList = netOUT[
+            curIndex = netOUT[
                            int(length[:i].sum()): int(length[:i].sum() + length[i])
-                           ].topk(1)[1][:, 0].tolist()
+                           ].topk(1)[1][:, 0].tolist()[0]
 
-            curText = ''.join([tdict[_] if 0 < _ <= len(tdict) else '' for _ in curIndexList])
+            curText = tdict[curIndex] if 0 < curIndex <= len(tdict) else ''
             curProbability = netOUT[int(length[:i].sum()): int(length[:i].sum() + length[i])].topk(1)[0][:, 0]
             curProbability = torch.exp(torch.log(curProbability).sum() / curProbability.size()[0])
             if thresh is not None:
