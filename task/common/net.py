@@ -26,7 +26,7 @@ def getOracleNetConfig(metaPath, modelPath, maxT, valFrac=0.8, mode="Test"):
         fe.FeatureExtractor,
         cam.ConvolutionAlignment,
         dtd.DecoupledTextDecoder,
-        pe.PositionalEncoding,
+        pe.PositionalEncodingOracle,
         0.5,
         metaPath,
         maxT,

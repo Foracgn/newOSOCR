@@ -50,11 +50,48 @@ class PositionalEncoding(nn.Module):
             curEncoded = torch.tensor([tdict[char] if char in tdict else tdict["[UNK]"]
                                        for char in regex.findall(r'\X', batch[i], regex.U)])
             out[i][0:len(curEncoded)] = curEncoded
-        # TODO encode的前后对比
         return out
 
     def dumpAll(self):
         return self.dwcore.dump_all()
+
+    @staticmethod
+    def decode(netOUT, length, tdict, thresh=None):
+        outDecode = []
+        outProbability = []
+        netOUT = nn.functional.softmax(netOUT, dim=1)
+        # TODO netOUT的内容
+        for i in range(0, length.shape[0]):
+            curIndexList = netOUT[
+                           int(length[:i].sum()): int(length[:i].sum() + length[i])
+                           ].topk(1)[1][:, 0].tolist()
+
+            curText = ''.join([tdict[_] if 0 < _ <= len(tdict) else '' for _ in curIndexList])
+            curProbability = netOUT[int(length[:i].sum()): int(length[:i].sum() + length[i])].topk(1)[0][:, 0]
+            curProbability = torch.exp(torch.log(curProbability).sum() / curProbability.size()[0])
+            if thresh is not None:
+                filteredText = []
+                for j in range(len(curText)):
+                    if curProbability[j] > thresh:
+                        filteredText.append(curText[j])
+                    else:
+                        filteredText.append('⑨')
+                curText = ''.join(filteredText)
+            outDecode.append(curText)
+            outProbability.append(curProbability)
+        return outDecode, outProbability
+
+
+class PositionalEncodingOracle(PositionalEncoding):
+
+    def encodeNaive(self, tdict, batch):
+        maxLen = max([len(regex.findall(r'\X', s, regex.U)) for s in batch])
+        out = torch.zeros(len(batch), maxLen + 1).long() + self.EOS
+        for i in range(0, len(batch)):
+            curEncoded = torch.tensor([tdict[char] if char in tdict else tdict["[UNK]"]
+                                       for char in regex.findall(r'\X', batch[i], regex.U)])
+            out[i][0:len(curEncoded)] = curEncoded
+        return out
 
     @staticmethod
     def decode(netOUT, length, tdict, thresh=None):
