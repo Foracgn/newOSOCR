@@ -21,6 +21,21 @@ def getNetConfig(metaPath, modelPath, maxT, valFrac=0.8, mode="Test"):
     return configs
 
 
+def getOracleNetConfig(metaPath, modelPath, maxT, valFrac=0.8, mode="Test"):
+    configs = makeNetConfig(
+        fe.FeatureExtractor,
+        cam.ConvolutionAlignment,
+        dtd.DecoupledTextDecoder,
+        pe.PositionalEncoding,
+        0.5,
+        metaPath,
+        maxT,
+        valFrac
+    )
+    makeToken(configs, modelPath, mode=mode)
+    return configs
+
+
 def makeNetConfig(FE, CAM, DTD, PE, hardness, metaPath, maxT, valFrac=0.8):
     return {
         'FE': FE,

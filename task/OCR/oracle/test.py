@@ -10,24 +10,22 @@ if __name__ == '__main__':
     setConfigs = yaml.load(data, Loader=yaml.FullLoader)
     modelRoot = setConfigs['modelRoot']
     modelPath = []
-    for i in range(0, 4):
-        taskPath = [
-            modelRoot + setConfigs['basic']['FE' + str(i)],
-            modelRoot + setConfigs['basic']['CAM' + str(i)],
-            modelRoot + setConfigs['basic']['DTD'+str(i)],
-            modelRoot + setConfigs['basic']['PE'+str(i)]
-        ]
-        modelPath.append(taskPath)
+    taskPath = [
+        modelRoot + setConfigs['basic']['FE0'],
+        modelRoot + setConfigs['basic']['CAM0'],
+        modelRoot + setConfigs['basic']['DTD0'],
+        modelRoot + setConfigs['basic']['PE0']
+    ]
+    modelPath.append(taskPath)
 
-    trainDict = ""
-    testDict = setConfigs['datasetRoot']+setConfigs['oracle_dict']
-    testRoot = setConfigs['datasetRoot']+setConfigs['oracle_root']
+    oracleDict = setConfigs['datasetRoot']+setConfigs['oracle_dict']
+    oracleRoot = setConfigs['datasetRoot']+setConfigs['oracle_root']
 
-    cfgs = base.FreeDictDanConfig(
+    cfgs = base.OracleDanConfig(
             modelPath[0],
-            testDict,
-            [testRoot],
-            [testRoot],
+            oracleDict,
+            [oracleRoot],
+            [oracleRoot],
             mode="Test"
     )
 

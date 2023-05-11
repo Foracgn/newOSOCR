@@ -2,22 +2,10 @@
 modelRoot: ./prfinal/oracle
 
 basic:
-  FE0: /basic_ostr_CE_alter_500_E9_M0.pth
-  CAM0: /basic_ostr_CE_alter_500_E9_M1.pth
-  DTD0: /basic_ostr_CE_alter_500_E9_M2.pth
-  PE0: /basic_ostr_CE_alter_500_E9_M3.pth
-  FE1: /basic_ostr_CE_alter_1000_E9_M0.pth
-  CAM1: /basic_ostr_CE_alter_1000_E9_M1.pth
-  DTD1: /basic_ostr_CE_alter_1000_E9_M2.pth
-  PE1: /basic_ostr_CE_alter_1000_E9_M3.pth
-  FE2: /basic_ostr_CE_alter_1500_E9_M0.pth
-  CAM2: /basic_ostr_CE_alter_1500_E9_M1.pth
-  DTD2: /basic_ostr_CE_alter_1500_E9_M2.pth
-  PE2: /basic_ostr_CE_alter_1500_E9_M3.pth
-  FE3: /basic_ostr_CE_alter_2000_E9_M0.pth
-  CAM3: /basic_ostr_CE_alter_2000_E9_M1.pth
-  DTD3: /basic_ostr_CE_alter_2000_E9_M2.pth
-  PE3: /basic_ostr_CE_alter_2000_E9_M3.pth
+  FE0: /oracle_M0.pth
+  CAM0: /oracle_M1.pth
+  DTD0: /oracle_M2.pth
+  PE0: /oracle_M3.pth
 
 datasetRoot: ./packs
 

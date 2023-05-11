@@ -33,3 +33,18 @@ class FreeDictDanConfig:
         self.optimizerConfigs = optimizer.getOpt()
         self.savingConfigs = train.getSaveCfg(modelPath)
         self.lossWeight = loss.cls_emb[1]
+
+
+class OracleDanConfig:
+    def __init__(self, modelPath, protoDict, trainRoot, testRoot, mode="Train"):
+        self.datasetConfigs = dataset.getColoredDataset(trainRoot, testRoot)
+
+        if mode == "Train":
+            self.globalConfigs = train.getTrainCfg()
+        else:
+            self.globalConfigs = train.getTestCfg()
+
+        self.netConfigs = net.getOracleNetConfig(protoDict, modelPath, maxT=25, mode=mode)
+        self.optimizerConfigs = optimizer.getOpt()
+        self.savingConfigs = train.getSaveCfg(modelPath)
+        self.lossWeight = loss.cls_emb[1]

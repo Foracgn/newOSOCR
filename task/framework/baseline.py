@@ -90,7 +90,7 @@ class BaselineDAN:
             tools = [self.testAccuracy, net.FlattenLabel]
             if reject:
                 tools = [self.testReject, net.FlattenLabel]
-            self.test(tools, miter=self.cfgs.globalConfigs['testMiter'], datasetPath=datasetPath, reject=reject, debug=debug)
+            self.test(tools, miter=self.cfgs.globalConfigs['testMiter'], datasetPath=None, reject=reject, debug=debug)
             self.testAccuracy.clear()
 
     def test(self, tools, miter=1000, datasetPath=None, reject=False, debug=False):
@@ -199,7 +199,7 @@ class BaselineDAN:
         net.TrainOrEval(self.model, 'Train')
         image = image.cuda()
         net.ZeroGrad(self.model)
-        features = self.model[0](image)
+        features, grid = self.model[0](image)
         one = self.model[1](features)
 
         outCls, _ = self.model[2](features[-1], proto, pLabel, one, target, length)
