@@ -6,6 +6,7 @@ import torch
 
 from neko_sdk.AOF.neko_lens import vis_lenses
 from task.common import loader, net, optimizer
+from task.common.loss import TransUnknownLabel
 from task.model import loss
 from task.model.DAN import vis_dan
 
@@ -85,15 +86,15 @@ class BaselineDAN:
                     self.cfgs.savingConfigs['savingPath'][i]
                 )
 
-    def runTest(self, datasetPath, reject, debug=False):
+    def runTest(self, datasetPath, reject, debug=False, complexLabel=False):
         with torch.no_grad():
             tools = [self.testAccuracy, net.FlattenLabel]
             if reject:
                 tools = [self.testReject, net.FlattenLabel]
-            self.test(tools, miter=self.cfgs.globalConfigs['testMiter'], datasetPath=None, reject=reject, debug=debug)
+            self.test(tools, miter=self.cfgs.globalConfigs['testMiter'], datasetPath=None, reject=reject, debug=debug, complexLabel=complexLabel)
             self.testAccuracy.clear()
 
-    def test(self, tools, miter=1000, datasetPath=None, reject=False, debug=False):
+    def test(self, tools, miter=1000, datasetPath=None, reject=False, debug=False, complexLabel=False):
         net.TrainOrEval(self.model, 'Eval')
 
         testMeta = None
@@ -136,9 +137,7 @@ class BaselineDAN:
             # repCharOutput = [[i] for i in charOutput]
             # reject
             if reject:
-                allSetLabel = []
-                for oneLabel in label:
-                    allSetLabel.append("".join([c if c in testDict else "⑨" for c in oneLabel]))
+                allSetLabel = TransUnknownLabel(label, testDict, complexLabel)
                 tools[0].addIter(charOutput, outLength, allSetLabel, debug)
             else:
                 tools[0].addIter(charOutput, outLength, label, debug)
