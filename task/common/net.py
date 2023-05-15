@@ -50,7 +50,7 @@ def makeNetConfig(FE, CAM, DTD, PE, hardness, metaPath, maxT, valFrac=0.8):
 
 
 def makeToken(configs, modelPath, mode="Test"):
-    if mode == "Test":
+    if mode == "Test" or mode == "ReTrain":
         configs['initStateDictFE'] = modelPath[0]
         configs['initStateDictCAM'] = modelPath[1]
         configs['initStateDictDTD'] = modelPath[2]
