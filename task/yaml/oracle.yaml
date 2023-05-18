@@ -2,12 +2,33 @@
 modelRoot: ./prfinal/oracle
 
 basic:
-  FE0: /oracle_M0.pth
-  CAM0: /oracle_M1.pth
-  DTD0: /oracle_M2.pth
-  PE0: /oracle_M3.pth
+  FE0: /train1000/oracle_1000_M0.pth
+  CAM0: /train1000/oracle_1000_M1.pth
+  DTD0: /train1000/oracle_1000_M2.pth
+  PE0: /train1000/oracle_1000_M3.pth
+  FE1: /train1500/oracle_1500_M0.pth
+  CAM1: /train1500/oracle_1500_M1.pth
+  DTD1: /train1500/oracle_1500_M2.pth
+  PE1: /train1500/oracle_1500_M3.pth
+  FE2: /train2000/oracle_2000_M0.pth
+  CAM2: /train2000/oracle_2000_M1.pth
+  DTD2: /train2000/oracle_2000_M2.pth
+  PE2: /train2000/oracle_2000_M3.pth
+  FE3: /train2500/oracle_2500_M0.pth
+  CAM3: /train2500/oracle_2500_M1.pth
+  DTD3: /train2500/oracle_2500_M2.pth
+  PE3: /train2500/oracle_2500_M3.pth
 
 datasetRoot: ./packs
 
-oracle_root: /oracle
-oracle_dict: /oracle/dict.pt
+oracle_root:
+  root0: /oracle/train1000
+  root1: /oracle/train1500
+  root2: /oracle/train2000
+  root3: /oracle/train2500
+
+oracle_dict:
+  dict0: /oracle/train1000/dict.pt
+  dict1: /oracle/train1500/dict.pt
+  dict2: /oracle/train2000/dict.pt
+  dict3: /oracle/train2500/dict.pt

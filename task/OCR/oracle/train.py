@@ -10,26 +10,31 @@ if __name__ == '__main__':
     setConfigs = yaml.load(data, Loader=yaml.FullLoader)
     modelRoot = setConfigs['modelRoot']
     modelPath = []
-    taskPath = [
-        modelRoot + setConfigs['basic']['FE0'],
-        modelRoot + setConfigs['basic']['CAM0'],
-        modelRoot + setConfigs['basic']['DTD0'],
-        modelRoot + setConfigs['basic']['PE0']
-    ]
-    modelPath.append(taskPath)
+    oracleDict = []
+    oracleRoot = []
 
-    oracleDict = setConfigs['datasetRoot']+setConfigs['oracle_dict']
-    oracleRoot = setConfigs['datasetRoot']+setConfigs['oracle_root']
+    for i in range(len(setConfigs['oracle_dict'])):
+        taskPath = [
+            modelRoot + setConfigs['basic']['FE'+str(i)],
+            modelRoot + setConfigs['basic']['CAM'+str(i)],
+            modelRoot + setConfigs['basic']['DTD'+str(i)],
+            modelRoot + setConfigs['basic']['PE'+str(i)]
+        ]
+        modelPath.append(taskPath)
+        oneDict = setConfigs['datasetRoot']+setConfigs['oracle_dict'+str(i)]
+        oracleDict.append(oneDict)
+        oneRoot = setConfigs['datasetRoot']+setConfigs['oracle_root'+str(i)]
+        oracleRoot.append(oneRoot)
 
-    cfgs = base.OracleDanConfig(
-            modelPath[0],
-            oracleDict,
-            [oracleRoot],
-            [oracleRoot],
-            mode="Train"
-    )
+    for i in range(len(modelPath)):
+        cfgs = base.OracleDanConfig(
+                modelPath[i],
+                oracleDict[i],
+                [oracleRoot[i]],
+                [oracleRoot[i]],
+                mode="Train"
+        )
 
-    runner = baseline.BaselineDAN(cfgs)
-    runner.run(modelRoot, True)
-
-    print("oracle task done")
+        runner = baseline.BaselineDAN(cfgs)
+        runner.runTest(modelRoot, True)
+        print("oracle task", i, "done")
