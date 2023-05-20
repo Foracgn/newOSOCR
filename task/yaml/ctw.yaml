@@ -29,7 +29,6 @@ test_rej:
   root: /ctwch/ctwfsl_5_1eval
   dict50: /ctwch/ctwfsl_5_1eval/dictrej50.pt
   dict100: /ctwch/ctwfsl_5_1eval/dictrej100.pt
-  dict150: /ctwch/ctwfsl_5_1eval/dictrej150.pt
   dict200: /ctwch/ctwfsl_5_1eval/dictrej200.pt
   dict250: /ctwch/ctwfsl_5_1eval/dictrej250.pt
 

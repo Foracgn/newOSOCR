@@ -32,3 +32,17 @@ oracle_dict:
   dict1: /oracle/train1500/dict.pt
   dict2: /oracle/train2000/dict.pt
   dict3: /oracle/train2500/dict.pt
+
+oracle_test_in_set_dict:
+  root: /oracle/test
+  dict0: /oracle/test/dict50.pt
+  dict1: /oracle/test/dict100.pt
+  dict2: /oracle/test/dict200.pt
+  dict3: /oracle/test/dict250.pt
+
+oracle_test_out_set_dict:
+  root: /oracle/test_ostr
+  dict0: /oracle/test_ostr/dict100.pt
+  dict1: /oracle/test_ostr/dict300.pt
+  dict2: /oracle/test_ostr/dict500.pt
+  dict3: /oracle/test_ostr/dict700.pt

@@ -1,5 +1,5 @@
 
-modelRoot: ./prfinal/hwdb
+modelRoot: ./prfinal/pami_ch_fsl_hwdb
 
 basic:
   FE0: /basic_hwdb_CE_alter_500_E9_M0.pth
@@ -22,24 +22,39 @@ basic:
 datasetRoot: ./packs
 
 test:
-  root: /hwdb/pami_ch_fsl_hwdb
-  dict: /hwdb/pami_ch_fsl_hwdb/cuwu_evalhwdbfsl_10_1/dict.pt
+  root: /pami_ch_fsl_hwdb/cuwu_evalhwdbfsl_10_1
+  dict: /pami_ch_fsl_hwdb/cuwu_evalhwdbfsl_10_1/dict.pt
 
 test_rej:
-  root: /hwdb/pami_ch_fsl_hwdb/cuwu_evalhwdbfsl_10_1/
-  dict50: /hwdb/pami_ch_fsl_hwdb/cuwu_evalhwdbfsl_10_1/dictrej.pt
-  dict100: /hwdb/pami_ch_fsl_hwdb/cuwu_evalhwdbfsl_10_1/dictrej100.pt
-  dict150: /hwdb/pami_ch_fsl_hwdb/cuwu_evalhwdbfsl_10_1/dictrej200.pt
-  dict200: /hwdb/pami_ch_fsl_hwdb/cuwu_evalhwdbfsl_10_1/dictrej400.pt
-  dict250: /hwdb/pami_ch_fsl_hwdb/cuwu_evalhwdbfsl_10_1/dictrej500.pt
+  root: /pami_ch_fsl_hwdb/cuwu_evalhwdbfsl_10_1/
+  dict50: /pami_ch_fsl_hwdb/cuwu_evalhwdbfsl_10_1/dictrej100.pt
+  dict100: /pami_ch_fsl_hwdb/cuwu_evalhwdbfsl_10_1/dictrej200.pt
+  dict200: /pami_ch_fsl_hwdb/cuwu_evalhwdbfsl_10_1/dictrej400.pt
+  dict250: /pami_ch_fsl_hwdb/cuwu_evalhwdbfsl_10_1/dictrej500.pt
 
 
 train:
-  root0: /hwdb/hwdbfsl5_train/
-  dict0: /hwdb/hwdbfsl5_train/dict.pt
-  root1: /hwdb/hwdbfsl5_train/
-  dict1: /hwdb/hwdbfsl10_train/dict.pt
-  root2: /hwdb/hwdbfsl15_train/
-  dict2: /hwdb/hwdbfsl15_train/dict.pt
-  root3: /hwdb/hwdbfsl20_train/
-  dict3: /hwdb/hwdbfsl20_train/dict.pt
+  root0: /pami_ch_fsl_hwdb/hwdbfsl_train_5/
+  dict0: /pami_ch_fsl_hwdb/hwdbfsl_train_5/dict.pt
+  root1: /pami_ch_fsl_hwdb/hwdbfsl_train_5/
+  dict1: /pami_ch_fsl_hwdb/hwdbfsl_train_5/dict.pt
+  root2: /pami_ch_fsl_hwdb/hwdbfsl_train_5/
+  dict2: /pami_ch_fsl_hwdb/hwdbfsl_train_5/dict.pt
+  root3: /pami_ch_fsl_hwdb/hwdbfsl_train_5/
+  dict3: /pami_ch_fsl_hwdb/hwdbfsl_train_5/dict.pt
+
+multi_train:
+  lsvtK: /lsvtdb_seen
+  ctwK: /ctwdb_seen
+  mlt_chlatK: /mlttrchlat_seen
+  rctwK: /rctwtrdb_seen
+  artK: /artdb_seen
+  mltjp: /mlttrjp_hori
+
+
+multi_test:
+  CUTE: /CUTE80
+  SVT: /SVT
+  IC03_867: /IC03_867
+  IC13_1015: /IC13_1015
+  mltjp: /mlttrjp_hori

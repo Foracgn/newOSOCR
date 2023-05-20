@@ -150,11 +150,16 @@ class LmdbDatasetTrain(LmdbDataset):
     def grab(self, fromWhich, index):
         with self.envs[fromWhich].begin(write=False) as res:
             imgKey = 'image-%09d' % index
-            imgBuff = res.get(imgKey.encode())
-            buff = six.BytesIO()
-            buff.write(imgBuff)
-            buff.seek(0)
-            img = Image.open(buff)
+            try:
+                imgBuff = res.get(imgKey.encode())
+                buff = six.BytesIO()
+                buff.write(imgBuff)
+                buff.seek(0)
+                img = Image.open(buff)
+            except:
+                print("Corrupted image for %d" % index)
+                print("repo name: ", self.roots[fromWhich])
+                return self[index + 1]
 
             labelKey = 'label-%09d' % index
             label = str(res.get(labelKey.encode()).decode('utf-8'))
