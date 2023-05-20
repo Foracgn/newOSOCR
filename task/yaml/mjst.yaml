@@ -44,6 +44,7 @@ multi_test:
   SVT: /SVT
   IC03_867: /IC03_867
   IC13_1015: /IC13_1015
+  iiit5k: /IIIT5k_3000
 
 
 multi_train:

@@ -6,7 +6,6 @@ from task.framework import baseline
 DICT = {
     "dict50": "dict50",
     "dict100": "dict100",
-    "dict150": "dict150",
     "dict200": "dict200",
     "dict250": "dict250",
 }

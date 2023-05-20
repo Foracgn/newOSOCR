@@ -8,7 +8,8 @@ DICT = {
     "CUTE": base.FreeDictDanConfig,
     "SVT": base.FreeDictDanConfig,
     "IC03_867": base.FreeDictDanConfig,
-    "IC13_1015": base.FreeDictDanConfig
+    "IC13_1015": base.FreeDictDanConfig,
+    "iiit5k": base.FreeDictDanConfig
 }
 
 if __name__ == '__main__':
