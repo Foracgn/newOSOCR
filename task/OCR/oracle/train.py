@@ -36,5 +36,5 @@ if __name__ == '__main__':
         )
 
         runner = baseline.BaselineDAN(cfgs)
-        runner.runTest(modelRoot, True)
+        runner.run(modelRoot, True)
         print("oracle task", i, "done")
