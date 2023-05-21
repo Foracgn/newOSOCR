@@ -21,9 +21,9 @@ if __name__ == '__main__':
             modelRoot + setConfigs['basic']['PE'+str(i)]
         ]
         modelPath.append(taskPath)
-        oneDict = setConfigs['datasetRoot']+setConfigs['oracle_dict'+str(i)]
+        oneDict = setConfigs['datasetRoot']+setConfigs['oracle_dict']['dict'+str(i)]
         oracleDict.append(oneDict)
-        oneRoot = setConfigs['datasetRoot']+setConfigs['oracle_root'+str(i)]
+        oneRoot = setConfigs['datasetRoot']+setConfigs['oracle_root']['root'+str(i)]
         oracleRoot.append(oneRoot)
 
     for i in range(len(modelPath)):
