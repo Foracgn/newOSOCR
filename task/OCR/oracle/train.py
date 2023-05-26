@@ -32,7 +32,7 @@ if __name__ == '__main__':
                 oracleDict[i],
                 [oracleRoot[i]],
                 [oracleRoot[i]],
-                mode="Train"
+                mode="ReTrain"
         )
 
         runner = baseline.BaselineDAN(cfgs)

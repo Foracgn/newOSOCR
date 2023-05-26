@@ -46,3 +46,7 @@ oracle_test_out_set_dict:
   dict1: /oracle/test_ostr/dict300.pt
   dict2: /oracle/test_ostr/dict500.pt
   dict3: /oracle/test_ostr/dict700.pt
+
+oracle_share:
+  root: /oracle/share
+  dict: /oracle/share/dict.pt
