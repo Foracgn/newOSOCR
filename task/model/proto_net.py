@@ -19,9 +19,5 @@ class OracleProtoNet(neko_nonsematical_prototype_core_basic):
     def transLabel(self, label):
         masterLabel = []
         for one in label:
-            if one in self.label_dict:
-                masterIndex = self.label_dict[one]
-                masterLabel.append(self.character[masterIndex])
-            else:
-                masterLabel.append(one)
+            masterLabel.append(self.character[self.masters[self.label_dict[one]]] if one in self.label_dict else one)
         return masterLabel
