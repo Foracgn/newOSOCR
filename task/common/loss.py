@@ -21,23 +21,27 @@ def TransUnknownLabel(label, testDict, complexLabel=False):
     return allSetLabel
 
 
-def TransPredictLabel(targetLabel, predictLabel, complexLabel=False):
+def TransPredictLabel(targetLabel, predictLabel, complexLabel=False, length=8):
     if not complexLabel:
         return
 
-    for one in targetLabel:
+    for i in range(0, length):
+        one = targetLabel[i]
         print(one, end=" ")
     print()
-    for one in targetLabel:
+    for i in range(0, length):
+        one = targetLabel[i]
         if one in oracleDict:
             print(oracleDict[one], end=" ")
         else:
             print("⑨", end=" ")
     print()
-    for one in predictLabel:
+    for i in range(0, length):
+        one = predictLabel[i]
         print(one, end=" ")
     print()
-    for one in predictLabel:
+    for i in range(0, length):
+        one = predictLabel[i]
         if one in oracleDict:
             print(oracleDict[one], end=" ")
         else:

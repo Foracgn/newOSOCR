@@ -15,3 +15,9 @@ class OracleProtoNet(neko_nonsematical_prototype_core_basic):
         plabels, sembs, tdicts = self.get_plabel_and_dict(trsps, trchs)
         # this.debug(trchs,"meow");
         return protos, sembs, plabels, tdicts
+
+    def transLabel(self, label):
+        masterLabel = []
+        for one in label:
+            masterLabel.append(self.masters[one] if self.masters_share else one)
+        return masterLabel

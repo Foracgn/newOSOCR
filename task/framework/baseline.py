@@ -139,9 +139,9 @@ class BaselineDAN:
             if reject:
                 allSetLabel = TransUnknownLabel(label, testDict, complexLabel)
                 tools[0].addIter(charOutput, outLength, allSetLabel, debug)
-                TransPredictLabel(allSetLabel, charOutput, complexLabel)
             else:
                 tools[0].addIter(charOutput, outLength, label, debug)
+                TransPredictLabel(label, charOutput, complexLabel)
             if datasetPath:
                 features, grid = self.model[0](image)
                 if len(grid) > 0:
@@ -235,6 +235,9 @@ class BaselineDAN:
 
     def makeProto(self, label):
         return self.model[3].sampleTrain(label)
+
+    def transMasterLabel(self, label):
+        return self.model[3].dwcore.tranLabel(label)
 
     @staticmethod
     def getAccuracy(key, sensitive):
