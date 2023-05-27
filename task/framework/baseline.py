@@ -6,7 +6,7 @@ import torch
 
 from neko_sdk.AOF.neko_lens import vis_lenses
 from task.common import loader, net, optimizer
-from task.common.loss import TransUnknownLabel
+from task.common.loss import TransUnknownLabel, TransPredictLabel
 from task.model import loss
 from task.model.DAN import vis_dan
 
@@ -139,6 +139,7 @@ class BaselineDAN:
             if reject:
                 allSetLabel = TransUnknownLabel(label, testDict, complexLabel)
                 tools[0].addIter(charOutput, outLength, allSetLabel, debug)
+                TransPredictLabel(allSetLabel, charOutput, complexLabel)
             else:
                 tools[0].addIter(charOutput, outLength, label, debug)
             if datasetPath:
