@@ -35,7 +35,7 @@ def TransPredictLabel(targetLabel, masterTarget, predictLabel, masterPredict, co
         if one in oracleDict:
             print(oracleDict[one], end=" ")
         else:
-            print("⑨", end=" ")
+            print("⑨      ", end=" ")
     print()
     print("============predict label============")
     for i in range(0, length):
@@ -47,6 +47,6 @@ def TransPredictLabel(targetLabel, masterTarget, predictLabel, masterPredict, co
         if one in oracleDict:
             print(oracleDict[one], end=" ")
         else:
-            print("⑨", end=" ")
+            print("⑨      ", end=" ")
     print()
     input()
