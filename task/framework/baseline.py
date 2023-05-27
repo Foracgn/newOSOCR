@@ -141,7 +141,7 @@ class BaselineDAN:
                 tools[0].addIter(charOutput, outLength, allSetLabel, debug)
             else:
                 tools[0].addIter(charOutput, outLength, label, debug)
-                TransPredictLabel(label, charOutput, complexLabel)
+                TransPredictLabel(self.transMasterLabel(label), self.transMasterLabel(charOutput), complexLabel)
             if datasetPath:
                 features, grid = self.model[0](image)
                 if len(grid) > 0:

@@ -25,6 +25,7 @@ def TransPredictLabel(targetLabel, predictLabel, complexLabel=False, length=8):
     if not complexLabel:
         return
 
+    print("=============target label============")
     for i in range(0, length):
         one = targetLabel[i]
         print(one, end=" ")
@@ -36,6 +37,7 @@ def TransPredictLabel(targetLabel, predictLabel, complexLabel=False, length=8):
         else:
             print("⑨", end=" ")
     print()
+    print("============predict label============")
     for i in range(0, length):
         one = predictLabel[i]
         print(one, end=" ")
